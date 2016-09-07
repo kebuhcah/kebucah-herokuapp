@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<link rel="stylesheet" type="text/css" href="caribe-svg.css"> </link>
-<link rel="stylesheet" type="text/css" href="caribe-html.css"> </link>
+<link rel="stylesheet" type="text/css" href="qartido-svg.css"> </link>
+<link rel="stylesheet" type="text/css" href="qartido-html.css"> </link>
 <link rel="stylesheet" type="text/css" href="lib/bootstrap.min.css"> </link>
 <link rel="stylesheet" type="text/css" href="lib/bootstrap-theme.min.css"> </link>
 <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
@@ -20,8 +20,8 @@
     var margin = {top: 0, left: 0, bottom: 0, right: 0}
       , width = window.innerWidth
       , width = width - margin.left - margin.right
-      , mapRatio = .50
-      , height = window.innerHeight
+      , mapRatio = .75
+      , height = Math.min(window.innerHeight, width * mapRatio)
       , scaleFactor = 1;
 
     var svg = d3.select("#map").append("svg")
@@ -48,9 +48,17 @@
       .range([0, 50]);
 
     var voronoi = d3.geom.voronoi()
-      .x(function(d) { return path.centroid(d)[0]; })
-      .y(function(d) { return path.centroid(d)[1]; })
+      .x(function(d) { return pathDotCentroid(d)[0]; })
+      .y(function(d) { return pathDotCentroid(d)[1]; })
       .clipExtent([[0, 0], [width, height]]);
+
+    function pathDotCentroid(d) {
+      if (d.id === 'FRA') {
+        return [path.centroid(d)[0]+(window.innerWidth/8.2),path.centroid(d)[1]-(window.innerWidth/10)]
+      } else {
+        return path.centroid(d)
+      }
+    }
 
   	d3.json("europe.json", function(error, europe) {
       if (error) return console.error(error);
@@ -87,7 +95,7 @@
           }))
       .enter().append("text")
         .attr("class", function(d) { return "country-label " + d.id; })
-        .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+        .attr("transform", function(d) { return "translate(" + pathDotCentroid(d) + ")"; })
         .attr("dy", ".35em")
         .attr("font-size", 12)
         .text(function(d) { return d.properties.name; })
@@ -128,7 +136,7 @@
             // adjust things when the window size changes
             width = window.innerWidth;
             width = width - margin.left - margin.right;
-            height = window.innerHeight;
+            height = Math.min(window.innerHeight, width * mapRatio);
 
             // update projection
             projection
@@ -142,15 +150,15 @@
             svg.selectAll('.country').attr('d', path);
             svg.selectAll('.border').attr('d', path);
             svg.selectAll(".country-label")
-              .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; });
+              .attr("transform", function(d) { return "translate(" + pathDotCentroid(d) + ")"; });
             svg.selectAll(".quota")
-              .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; });
+              .attr("transform", function(d) { return "translate(" + pathDotCentroid(d) + ")"; });
             svg.selectAll(".consumption")
-              .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; });
+              .attr("transform", function(d) { return "translate(" + pathDotCentroid(d) + ")"; });
 
             voronoi
-              .x(function(d) { return path.centroid(d)[0]; })
-              .y(function(d) { return path.centroid(d)[1]; })
+              .x(function(d) { return pathDotCentroid(d)[0]; })
+              .y(function(d) { return pathDotCentroid(d)[1]; })
               .clipExtent([[0, 0], [width, height]]);
 
               svg.selectAll(".voronoi")
@@ -162,14 +170,14 @@
               svg.select(".legend").attr("transform", "translate(" + (width - 75) + "," + 15 + ")");
               svg.selectAll(".consumption-label.specific")
                 .attr("transform", function(d) {
-                   return "translate(" + (path.centroid(d)[0])
-                      + "," + (path.centroid(d)[1] - (radius(d.properties.consumptionKbd) || 0)
+                   return "translate(" + (pathDotCentroid(d)[0])
+                      + "," + (pathDotCentroid(d)[1] - (radius(d.properties.consumptionKbd) || 0)
                       - ('VEN' === d.id ? -10 : 'BLZ' !== d.id ? 8 : 12)) + ")";
                  })
                svg.selectAll(".quota-label.specific")
                  .attr("transform", function(d) {
-                    return "translate(" + (path.centroid(d)[0])
-                       + "," + (path.centroid(d)[1] + ((radius(d.properties.quotaKbd))||0)
+                    return "translate(" + (pathDotCentroid(d)[0])
+                       + "," + (pathDotCentroid(d)[1] + ((radius(d.properties.quotaKbd))||0)
                        + (d.id !== 'GUY' ? 8 : 12)) + ")";
                   })
         }
