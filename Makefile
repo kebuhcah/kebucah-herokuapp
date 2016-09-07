@@ -7,20 +7,15 @@ build/ne_50m_admin_0_countries.shp: build/ne_50m_admin_0_countries.zip
 	touch $@
 
 build/countries.json: build/ne_50m_admin_0_countries.shp
-	ogr2ogr -f GeoJSON -where "ADM0_A3 IN ('ATG', 'BHS', 'BLZ', 'BRB', 'CRI', \
-	                                       'CUB', 'DMA', 'DOM', 'GLP', 'GRD', \
-																				 'GTM', 'GUF', 'GUY', 'HND', 'HTI', \
-																				 'JAM', 'KNA', 'LCA', 'MTQ', 'NIC', \
-																				 'PAN', 'SLV', 'SUR', 'TTO', 'VCT', \
-																				 'VEN', 'COL', 'BRA', 'USA', 'MEX', \
-																				 'PRI', 'FRA', 'PER', 'ECU')" $@ $<
+	ogr2ogr -f GeoJSON -where "ADM0_A3 IN ('SRB', 'ALB', 'DEU', 'BGR', 'FRA', \
+																				 'ARM', 'ISL', 'UKR', 'SVN', 'CZE')" $@ $<
 
 localdata/caribe_official.tsv: localdata/convert.q
 	q localdata/convert.q
 
-build/caribe.json: build/countries.json localdata/caribe_official.tsv
+build/europe.json: build/countries.json localdata/europe_ref_data.tsv
 	topojson -o $@ --id-property 'adm0_a3,country' \
-	--external-properties localdata/caribe_official.tsv \
+	--external-properties localdata/europe_ref_data.tsv \
 	--properties quotaKbd=+quotaKbd \
 	--properties consumptionKbd=+consumptionKbd \
 	--properties actualKbd=+actualKbd \
@@ -32,5 +27,5 @@ build/caribe.json: build/countries.json localdata/caribe_official.tsv
 	--properties joinedYear=joinedYear \
 	--properties name=name_long -- $<
 
-public/caribe.json: build/caribe.json
+public/europe.json: build/europe.json
 	cp $< $@
