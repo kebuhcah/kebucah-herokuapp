@@ -9,72 +9,35 @@
   <title>Qartido</title
 </head>
 <body>
-  <header class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#">
-          QARTIDO
-        </a>
-      </div>
-    </div>
-  </header>
-  <div class="row">
-    <div class="col-sm-10">
-      <div class="panel panel-info">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
-            Upcoming Elections <small>(click each country for more details)</small>
-          </h3>
-        </div>
-        <div id="map">
-        </div>
-        <div class="panel-footer">Sources: IDK</div>
-      </div>
-    </div>
+  <div id="map">
   </div>
-  <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Modal title</h4>
-        </div>
-        <div class="modal-body">
-          <p>content goes here</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
-  
+
   <script src="lib/d3.v3.min.js" charset="utf-8"></script>
   <script src="lib/topojson.v1.min.js"></script>
   <script src="lib/jquery.min.js"></script>
   <script src="lib/bootstrap.min.js" charset="utf-8"></script>
   <script type="text/javascript">
     var margin = {top: 0, left: 0, bottom: 0, right: 0}
-      , width = parseInt(d3.select('#map').style('width'))
+      , width = window.innerWidth
       , width = width - margin.left - margin.right
-      , mapRatio = .65
-      , height = width * mapRatio;
+      , mapRatio = .50
+      , height = window.innerHeight
+      , scaleFactor = 1;
 
     var svg = d3.select("#map").append("svg")
     		.attr("width", width)
         .attr("height", height)
 				.attr("class", "root");
 
-    var hiddenCountries = ['COL', 'BRA', 'PRI', 'MEX', 'BRB',
-		                       'USA', 'ECU', 'PER', 'PAN', 'CRI', 'TTO'];
+    var shownCountries = ['SRB', 'ALB', 'DEU', 'BGR', 'FRA', 'ARM', 'ISL', 'UKR', 'SVN', 'CZE'];
+
     function isHiddenCountry(c) {
-			return hiddenCountries.indexOf(c) >= 0;
+			return shownCountries.indexOf(c) < 0;
 		}
 
-		var projection = d3.geo.conicConformal()
-			.center([15, 48])
-			.scale(width * 4 / 3)
+		var projection = d3.geo.azimuthalEqualArea()
+			.center([17, 50.5])
+			.scale(width * scaleFactor)
 			.translate([width / 2, height / 2]);
 
   	var path = d3.geo.path()
@@ -89,12 +52,12 @@
       .y(function(d) { return path.centroid(d)[1]; })
       .clipExtent([[0, 0], [width, height]]);
 
-  	d3.json("europe.json", function(error, caribe) {
+  	d3.json("europe.json", function(error, europe) {
       if (error) return console.error(error);
 
-  		console.log(caribe);
+  		console.log(europe);
 
-      var countries = topojson.feature(caribe, caribe.objects.countries);
+      var countries = topojson.feature(europe, europe.objects.countries);
 
     	svg.selectAll(".country")
     			.data(countries.features)
@@ -104,35 +67,19 @@
 					.classed("ghost", function(d) { return isHiddenCountry(d.id); });
 
 			svg.append("path")
-				.datum(topojson.mesh(caribe, caribe.objects.countries, function(a, b) {
+				.datum(topojson.mesh(europe, europe.objects.countries, function(a, b) {
 					return a !== b && !(isHiddenCountry(a.id) && isHiddenCountry(b.id));
 				}))
 				.attr("d", path)
 				.attr("class", "border");
 
 			svg.append("path")
-					.datum(topojson.mesh(caribe, caribe.objects.countries, function(a, b) {
+					.datum(topojson.mesh(europe, europe.objects.countries, function(a, b) {
 						return a === b && isHiddenCountry(a.id)
 							|| a !== b && isHiddenCountry(a.id) && isHiddenCountry(b.id);
 					}))
 					.attr("d", path)
 					.attr("class", "border ghost");
-
-      var bubble = svg.append("g")
-        .attr("class", "bubble")
-      .selectAll("circle")
-        .data(countries.features
-          .sort(function(a, b) { return b.properties.quotaKbd - a.properties.quotaKbd; })
-          .filter(function(d) { return !isHiddenCountry(d.id); }))
-      .enter();
-      bubble.append("circle")
-        .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
-        .attr("r", function(d) { return radius(d.properties.quotaKbd) || 0; })
-        .attr("class", function(d){ return "quota " + d.id; });
-      bubble.append("circle")
-        .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
-        .attr("r", function(d) { return radius(d.properties.consumptionKbd) || 0; })
-        .attr("class", function(d){ return "consumption " + d.id; });
 
       svg.selectAll(".country-label")
           .data(countries.features.filter(function(d) {
@@ -152,22 +99,6 @@
           return ['KNA', 'VCT', 'DMA', 'SLV'].indexOf(d.id) >= 0 ? "end" :
                 ['ATG', 'DOM', 'BLZ', 'LCA', 'GRD'].indexOf(d.id) >= 0 ? "start" : "middle";
         });
-
-      bubble.append("text")
-        .attr("transform", function(d) {
-           return "translate(" + (path.centroid(d)[0])
-              + "," + (path.centroid(d)[1] + ((radius(d.properties.quotaKbd))||0)
-              + (d.id !== 'GUY' ? 8 : 12)) + ")";
-         })
-        .attr("dy", ".35em")
-        .attr("font-size", 12)
-        .attr("class", function(d){ return "quota-label specific " + d.id; })
-        .style("text-anchor", function(d) {
-          return ['DOM', 'SUR', 'SLV'].indexOf(d.id) >= 0 ? "middle" :
-                 ['GTM', 'CUB', 'JAM', 'HTI', 'GUY'].indexOf(d.id) < 0 ? "start" : "end";
-        })
-        .text(function(d) { return  d.properties.quotaKbd > 0 ?
-          (d.properties.quotaKbd + " KB/D" + (d.id === 'CUB' ? "*" : "")) : ""; });
 
 
         //Initiate a group element to place the voronoi diagram in
@@ -195,14 +126,14 @@
 
         function resize() {
             // adjust things when the window size changes
-            width = parseInt(d3.select('#map').style('width'));
+            width = window.innerWidth;
             width = width - margin.left - margin.right;
-            height = width * mapRatio;
+            height = window.innerHeight;
 
             // update projection
             projection
                 .translate([width / 2, height / 2])
-                .scale(width * 4 / 3);
+                .scale(width * scaleFactor);
 
             // resize the map container
             svg.attr('width', width).attr('height', height);
