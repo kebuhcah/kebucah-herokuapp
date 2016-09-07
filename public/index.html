@@ -6,114 +6,30 @@
 <link rel="stylesheet" type="text/css" href="lib/bootstrap-theme.min.css"> </link>
 <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
 <head>
-  <title>Petrocaribe</title
+  <title>Qartido</title
 </head>
 <body>
   <header class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
         <a class="navbar-brand" href="#">
-          <span class="glyphicon glyphicon-oil" aria-hidden="true"></span>
-          Petrocaribe: A Comedy of Errors
+          QARTIDO
         </a>
       </div>
     </div>
   </header>
   <div class="row">
-    <div class="col-sm-4">
-      <div class="panel panel-info" id="content-panel">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-            <span class="content-title">Information</span>
-          </h3>
-        </div>
-        <ol class="breadcrumb">
-          <li class="intro-link active"><a href="#" class="inactivelink">Intro</a></li>
-          <li class="country-name hidden"><a href="#">(Country)</a></li>
-          <li class="data-link hidden"><b><a href="#">DATA</a></b></li>
-        </ol>
-        <div class="panel-body" id="info-intro-content">
-          <p><b>Petrocaribe</b> is an oil alliance between Venezuela and 17 Caribbean countries that seeks to provide favorable trade deals for refined and unrefined petroleum. It formed in 2005, one year after many of the same countries created the Bolivarian Alliance for the Peoples of Our America, an economic alliance known as ALBA. It was created with the help of Cuba and was initiated by former Venezuelan president Hugo Chavez to foster an integrated economic system. ALBA also has its own digital currency, known as the Sucre, which was only used for the first time in 2010.</p>
-          <p>Petrocaribe does not offer a discount to member countries. Instead, it promises an extended timetable for payment, allowing countries to defer repayment for long periods of time, even decades. This structure has had a downside, though, allowing countries to rack up debt. In 2015, Jamaica had to sell $2 billion in bonds to pay down its debt to Venezuela. After Venezuela’s economy lagged due to falling oil prices, it began to seek some of the money it was owed through the Petrocaribe system, putting more pressure on member nations.</p>
-          <button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#introModal">
-            Read more...
-          </button>
-        </div>
-        <div id="info-data-container" class="hidden">
-          <table id="info-data-table" class="table table-striped table-condensed">
-            <tr id="info-data-country">
-              <th width="40%">Country Name</th>
-              <td></td>
-            </tr>
-            <tr id="info-data-joined-year">
-              <th>Joined in</th>
-              <td></td>
-            </tr>
-            <tr id="info-data-consumption">
-              <th>Total Consumption (Estimate)</th>
-              <td></td>
-            </tr>
-            <tr id="info-data-quota">
-              <th>Petrocaribe Quota</th>
-              <td></td>
-            </tr>
-            <tr id="info-data-actual">
-              <th>Actual Petrocaribe Shipments in 2015</th>
-              <td>LOL</td>
-            </tr>
-            <tr id="info-data-products">
-              <th>Products Supplied</th>
-              <td></td>
-            </tr>
-            <tr id="info-data-infra">
-              <th>Infrastructure Projects</th>
-              <td></td>
-            </tr>
-            <tr id="info-data-social">
-              <th>Social Projects</th>
-              <td></td>
-            </tr>
-            <tr id="info-data-alba">
-              <th>Alba Alimentos</th>
-              <td></td>
-            </tr>
-            <tr id="info-data-joint">
-              <th>Joint Ventures</th>
-              <td></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td>
-                <button type="button" class="btn btn-default btn-md">
-                  &larr;back
-                </button>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="panel-body hidden" id="info-country-lede">
-          <div class="content">content goes here</div>
-            <button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#myModal">
-              Read more...
-            </button>
-            <button id="data-button" type="button" class="btn btn-primary btn-md">
-              See the numbers
-            </button>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-8">
+    <div class="col-sm-10">
       <div class="panel panel-info">
         <div class="panel-heading">
           <h3 class="panel-title">
             <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
-            Petrocaribe Countries <small>(click each country for more details)</small>
+            Upcoming Elections <small>(click each country for more details)</small>
           </h3>
         </div>
         <div id="map">
         </div>
-        <div class="panel-footer">Sources: Petrocaribe, SELA, and IndexMundi</div>
+        <div class="panel-footer">Sources: IDK</div>
       </div>
     </div>
   </div>
@@ -170,14 +86,14 @@
         .attr("height", height)
 				.attr("class", "root");
 
-    var hiddenCountries = ['COL', 'BRA', 'PRI', 'FRA', 'MEX', 'BRB',
+    var hiddenCountries = ['COL', 'BRA', 'PRI', 'MEX', 'BRB',
 		                       'USA', 'ECU', 'PER', 'PAN', 'CRI', 'TTO'];
     function isHiddenCountry(c) {
 			return hiddenCountries.indexOf(c) >= 0;
 		}
 
-		var projection = d3.geo.mercator()
-			.center([-73, 14])
+		var projection = d3.geo.conicConformal()
+			.center([15, 48])
 			.scale(width * 4 / 3)
 			.translate([width / 2, height / 2]);
 
@@ -193,40 +109,7 @@
       .y(function(d) { return path.centroid(d)[1]; })
       .clipExtent([[0, 0], [width, height]]);
 
-    var legend = svg.append("g")
-        .attr("class", "legend")
-        .attr("transform", "translate(" + (width - 75) + "," + 15 + ")")
-      .selectAll("g")
-        .data([150,50,10])
-      .enter().append("g").attr("class", function(d){ return "legend-circle-" + d; });
-
-    legend.append("circle")
-        .attr("cy", radius)
-        .attr("r", radius);
-    legend.append("text")
-        .attr("y", function(d) { return 2 * radius(d) - 20; })
-        .attr("dy", "1.3em")
-        .text(d3.format("d"));
-
-    var legend150 = svg.selectAll(".legend-circle-150");
-    legend150.append("text")
-        .attr("dy", "1.3em")
-        .attr("y", function(d) { return -20; })
-        .attr("class", "consumption-label")
-        .style("text-anchor","middle")
-        .text("Total Consumption");
-    var quotaLegend = legend150.append("text")
-        .attr("y", function(d) { return 2 * radius(d) - 5; })
-        .attr("dy", "1.3em")
-        .attr("class", "quota-label")
-        .style("text-anchor","middle");
-      quotaLegend.append("tspan").attr("x",0).attr("dy","1.3em").text("Petrocaribe Quota");
-      quotaLegend.append("tspan")
-        .attr("x",0).attr("dy","1.3em")
-        .classed("note", true)
-        .text("(1000 barrels/day)");
-
-  	d3.json("caribe.json", function(error, caribe) {
+  	d3.json("europe.json", function(error, caribe) {
       if (error) return console.error(error);
 
   		console.log(caribe);
@@ -290,20 +173,6 @@
                 ['ATG', 'DOM', 'BLZ', 'LCA', 'GRD'].indexOf(d.id) >= 0 ? "start" : "middle";
         });
 
-      bubble.append("text")
-        .attr("transform", function(d) {
-           return "translate(" + (path.centroid(d)[0])
-              + "," + (path.centroid(d)[1] - (radius(d.properties.consumptionKbd) || 0)
-              - ('VEN' === d.id ? -10 : 'BLZ' !== d.id ? 7 : 12)) + ")";
-         })
-        .attr("dy", ".35em")
-        .attr("font-size", 12)
-        .attr("class", function(d){ return "consumption-label specific " + d.id; })
-        .style("text-anchor", function(d) {
-          return ['DOM', 'VEN', 'GUY', 'SUR', 'JAM'].indexOf(d.id) >= 0 ? "middle" :
-                 ['HND', 'NIC', 'SLV'].indexOf(d.id) >= 0 ? "start" : "end";
-        })
-        .text(function(d) { return d.properties.consumptionKbd + " KB/D"; });
       bubble.append("text")
         .attr("transform", function(d) {
            return "translate(" + (path.centroid(d)[0])
