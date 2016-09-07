@@ -7,7 +7,7 @@ build/ne_50m_admin_0_countries.shp: build/ne_50m_admin_0_countries.zip
 	touch $@
 
 build/countries.json: build/ne_50m_admin_0_countries.shp
-	ogr2ogr -f GeoJSON -where "ADM0_A3 IN ('SRB', 'ALB', 'DEU', 'BGR', 'FRA', \
+	ogr2ogr -f GeoJSON -where "ADM0_A3 IN ('GBR', 'SRB', 'ALB', 'DEU', 'BGR', 'FRA', \
 																				 'ARM', 'ISL', 'UKR', 'SVN', 'CZE')" $@ $<
 
 localdata/caribe_official.tsv: localdata/convert.q
