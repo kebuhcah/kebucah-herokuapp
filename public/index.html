@@ -32,8 +32,8 @@
     var upcomingCountries = ['SRB', 'ALB', 'DEU', 'BGR', 'FRA', 'ARM', 'ISL', 'UKR', 'SVN', 'CZE'];
 
     function isHiddenCountry(d) {
-			return !(d.properties.continent === 'Europe' || ['CYP','TUR','ARM','AZE','GEO'].indexOf(d.id) >= 0)
-        || ['JEY','SMR','FRO','GGY','MLT','IMN','ALD','LIE','AND','MCO'].indexOf(d.id) >= 0;
+			return !(d.properties.continent === 'Europe' || ['CYP','TUR','CYN','ARM','AZE','GEO'].indexOf(d.id) >= 0)
+        || ['JEY','FRO','GGY','IMN','ALD'].indexOf(d.id) >= 0;
 		}
 
 		var projection = d3.geo.azimuthalEqualArea()
@@ -104,8 +104,8 @@
         .attr("transform", function(d) { return "translate(" + pathDotCentroid(d) + ")"; })
         .attr("dy", ".35em")
         .attr("font-size", 12)
-        .text(function(d) { return ['MKD','MNE','KOS','BIH','LUX','SVN','HRV','MDA'].indexOf(d.id) >= 0
-            || d.properties.continent === 'Asia' ? d.id : d.properties.name; })
+        .text(function(d) { return ['MKD','MNE','KOS','BIH','LUX','SVN','HRV','AND','MCO','SMR','LIE'].indexOf(d.id) >= 0
+             ? d.id : d.properties.name; })
         .attr("x", function(d) {
           return 0;
         })
