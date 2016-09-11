@@ -6,7 +6,7 @@
 <link rel="stylesheet" type="text/css" href="lib/bootstrap-theme.min.css"> </link>
 <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
 <head>
-  <title>Qartido</title
+  <title>qartido</title
 </head>
 <body>
   <div id="map">
@@ -29,10 +29,11 @@
         .attr("height", height)
 				.attr("class", "root");
 
-    var shownCountries = ['SRB', 'ALB', 'DEU', 'BGR', 'FRA', 'ARM', 'ISL', 'UKR', 'SVN', 'CZE'];
+    var upcomingCountries = ['SRB', 'ALB', 'DEU', 'BGR', 'FRA', 'ARM', 'ISL', 'UKR', 'SVN', 'CZE'];
 
-    function isHiddenCountry(c) {
-			return shownCountries.indexOf(c) < 0;
+    function isHiddenCountry(d) {
+			return !(d.properties.continent === 'Europe' || ['CYP','TUR','ARM','AZE','GEO'].indexOf(d.id) >= 0)
+        || ['JEY','SMR','FRO','GGY','MLT','IMN','ALD','LIE','AND','MCO'].indexOf(d.id) >= 0;
 		}
 
 		var projection = d3.geo.azimuthalEqualArea()
@@ -55,6 +56,10 @@
     function pathDotCentroid(d) {
       if (d.id === 'FRA') {
         return [path.centroid(d)[0]+(window.innerWidth/8.2),path.centroid(d)[1]-(window.innerWidth/10)]
+      } else if (d.id === 'HRV') {
+        return [path.centroid(d)[0],path.centroid(d)[1]-(window.innerWidth/120)]
+      } else if (d.id === 'RUS') {
+        return [path.centroid(d)[0]-(window.innerWidth/12),path.centroid(d)[1]+(window.innerWidth/3.5)]
       } else {
         return path.centroid(d)
       }
@@ -72,40 +77,40 @@
   		  .enter().append("path")
     			.attr("class", function(d) { return "country " + d.id; })
     			.attr("d", path)
-					.classed("ghost", function(d) { return isHiddenCountry(d.id); });
+          .classed("upcoming", function(d) { return upcomingCountries.indexOf(d.id) >= 0; })
+					.classed("ghost", function(d) { return isHiddenCountry(d); });
 
 			svg.append("path")
 				.datum(topojson.mesh(europe, europe.objects.countries, function(a, b) {
-					return a !== b && !(isHiddenCountry(a.id) && isHiddenCountry(b.id));
+					return a !== b && !(isHiddenCountry(a) && isHiddenCountry(b));
 				}))
 				.attr("d", path)
 				.attr("class", "border");
 
 			svg.append("path")
 					.datum(topojson.mesh(europe, europe.objects.countries, function(a, b) {
-						return a === b && isHiddenCountry(a.id)
-							|| a !== b && isHiddenCountry(a.id) && isHiddenCountry(b.id);
+						return a === b && isHiddenCountry(a)
+							|| a !== b && isHiddenCountry(a) && isHiddenCountry(b);
 					}))
 					.attr("d", path)
 					.attr("class", "border ghost");
 
       svg.selectAll(".country-label")
           .data(countries.features.filter(function(d) {
-            return !isHiddenCountry(d.id);
+            return !isHiddenCountry(d);
           }))
       .enter().append("text")
         .attr("class", function(d) { return "country-label " + d.id; })
         .attr("transform", function(d) { return "translate(" + pathDotCentroid(d) + ")"; })
         .attr("dy", ".35em")
         .attr("font-size", 12)
-        .text(function(d) { return d.properties.name; })
+        .text(function(d) { return ['MKD','MNE','KOS','BIH','LUX','SVN','HRV','MDA'].indexOf(d.id) >= 0
+            || d.properties.continent === 'Asia' ? d.id : d.properties.name; })
         .attr("x", function(d) {
-          return ['KNA', 'VCT', 'DMA'].indexOf(d.id) >= 0 ? -7 :
-                ['ATG', 'BLZ', 'LCA', 'GRD'].indexOf(d.id) >= 0 ? 10 : 0;
+          return 0;
         })
         .style("text-anchor", function(d) {
-          return ['KNA', 'VCT', 'DMA', 'SLV'].indexOf(d.id) >= 0 ? "end" :
-                ['ATG', 'DOM', 'BLZ', 'LCA', 'GRD'].indexOf(d.id) >= 0 ? "start" : "middle";
+          return "middle";
         });
 
 
@@ -114,7 +119,7 @@
           .attr("class", "voronoiWrapper");
         voronoiGroup.selectAll("path")
             .data(voronoi(countries.features.filter(function(d) {
-              return !isHiddenCountry(d.id);
+              return !isHiddenCountry(d);
             }))) //Use vononoi() with your dataset inside
           .enter().append("path")
             .attr("d", function(d, i) { return "M" + d.join("L") + "Z"; })
@@ -163,7 +168,7 @@
 
               svg.selectAll(".voronoi")
                   .data(voronoi(countries.features.filter(function(d) {
-                    return !isHiddenCountry(d.id);
+                    return !isHiddenCountry(d);
                   })))
                   .attr("d", function(d, i) { return "M" + d.join("L") + "Z"; });
 

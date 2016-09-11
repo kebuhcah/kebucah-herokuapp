@@ -2,11 +2,7 @@
   fill: #DB8
 }
 
-.country.VEN {
-  fill: #f66;
-}
-
-.country.VEN.highlighted {
+.country.upcoming {
   fill: #f66;
 }
 

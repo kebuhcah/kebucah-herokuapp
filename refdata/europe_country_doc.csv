@@ -1,0 +1,11 @@
+country,countryCode,population,gdpMillionUsd,corruptionIndex,systemOfGovernment
+Germany,DEU,80716000,3467780,81,federal parliamentary
+France,FRA,66104000,2464790,70,semi-presidential
+Ukraine,UKR,45360000,83550,27,semi-presidential
+Czech Republic,CZE,10256760,185269,56,parliamentary
+Bulgaria,BGR,7621337,49364,38,parliamentary
+Serbia,SRB,7120666,37381,40,parliamentary
+Armenia,ARM,2998600,10774,35,semi-presidential
+Albania,ALB,2831741,12269,36,parliamentary
+Slovenia,SVN,2050189,43791,60,parliamentary
+Iceland,ISL,307261,18633,79,parliamentary
