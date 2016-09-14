@@ -32,12 +32,12 @@
     var upcomingCountries = ['SRB', 'ALB', 'DEU', 'BGR', 'FRA', 'ARM', 'ISL', 'UKR', 'SVN', 'CZE'];
 
     function isHiddenCountry(d) {
-			return !(d.properties.continent === 'Europe' || ['CYP','TUR','CYN','ARM','AZE','GEO'].indexOf(d.id) >= 0)
-        || ['JEY','FRO','GGY','IMN','ALD'].indexOf(d.id) >= 0;
+			return !(d.properties.continent === 'Europe' || ['CYP','CYN','TUR','ARM','AZE','GEO'].indexOf(d.id) >= 0)
+        || ['JEY','FRO','GGY','IMN','ALD','AND','MCO','LIE','SMR'].indexOf(d.id) >= 0;
 		}
 
 		var projection = d3.geo.azimuthalEqualArea()
-			.center([17, 50.5])
+			.center([20, 51])
 			.scale(width * scaleFactor)
 			.translate([width / 2, height / 2]);
 
@@ -75,14 +75,22 @@
     	svg.selectAll(".country")
     			.data(countries.features)
   		  .enter().append("path")
-    			.attr("class", function(d) { return "country " + d.id; })
+    			.attr("class", function(d) { return "country " + (d.id === 'CYN' ? 'CYP' : d.id); })
     			.attr("d", path)
           .classed("upcoming", function(d) { return upcomingCountries.indexOf(d.id) >= 0; })
-					.classed("ghost", function(d) { return isHiddenCountry(d); });
+					.classed("ghost", function(d) { return isHiddenCountry(d); })
+          .style("pointer-events", "all")
+          .on("mouseover", mouseover)
+          .on("mouseout", mouseout)
+          .on("touchstart", touchstart)
+          .on("mousedown", mousedown)
+          .on("mouseup", mouseup)
+          .on("click", click);
 
 			svg.append("path")
 				.datum(topojson.mesh(europe, europe.objects.countries, function(a, b) {
-					return a !== b && !(isHiddenCountry(a) && isHiddenCountry(b));
+					return !(isHiddenCountry(a) && isHiddenCountry(b))
+            && !(a.id === 'CYP' && b.id === 'CYN' || a.id === 'CYN' && b.id === 'CYP');
 				}))
 				.attr("d", path)
 				.attr("class", "border");
@@ -97,7 +105,7 @@
 
       svg.selectAll(".country-label")
           .data(countries.features.filter(function(d) {
-            return !isHiddenCountry(d);
+            return !isHiddenCountry(d) && d.id !== 'CYN';
           }))
       .enter().append("text")
         .attr("class", function(d) { return "country-label " + d.id; })
@@ -111,11 +119,11 @@
         })
         .style("text-anchor", function(d) {
           return "middle";
-        });
-
+        })
+        .style("pointer-events", "none");
 
         //Initiate a group element to place the voronoi diagram in
-        var voronoiGroup = svg.append("g")
+        /*var voronoiGroup = svg.append("g")
           .attr("class", "voronoiWrapper");
         voronoiGroup.selectAll("path")
             .data(voronoi(countries.features.filter(function(d) {
@@ -124,16 +132,9 @@
           .enter().append("path")
             .attr("d", function(d, i) { return "M" + d.join("L") + "Z"; })
           .attr("class", function(d,i) { return "voronoi " + d.id; })
-            //.style("stroke", "#2074A0") //I use this to look at how the cells are dispersed as a check
+            .style("stroke", "#2074A0") //I use this to look at how the cells are dispersed as a check
             .style("fill", "none")
-            .style("stroke-width", "1px")
-            .style("pointer-events", "all")
-            .on("mouseover", mouseover)
-            .on("mouseout", mouseout)
-            .on("touchstart", touchstart)
-            .on("mousedown", mousedown)
-            .on("mouseup", mouseup)
-            .on("click", click);
+            .style("stroke-width", "1px");*/
 
         d3.select(window).on('resize', resize);
 
@@ -189,26 +190,22 @@
 		});
 
     function mouseover(d,i) {
-      d3.selectAll("."+d.point.id).classed("highlighted",true);
+      d3.selectAll("."+(d.id === 'CYN' ? 'CYP' : d.id)).classed("highlighted",true);
       d3.selectAll(".legend text").classed("highlighted",true);
     }
 
     function mouseout(d,i) {
-      d3.selectAll("."+d.point.id).classed("highlighted",false);
+      d3.selectAll("."+(d.id === 'CYN' ? 'CYP' : d.id)).classed("highlighted",false);
       d3.selectAll(".legend text").classed("highlighted",false);
     }
 
     function mousedown(d,i) {
-      d3.selectAll(".quota."+d.point.id).classed("mousedown",true);
-      d3.selectAll(".consumption."+d.point.id).classed("mousedown",true);
       d3.select("#content-panel").classed("panel-info",false);
       d3.select("#content-panel").classed("panel-warning",true);
       d3.select("#content-panel").classed({"panel-info": false, "panel-warning": true});
     }
 
     function mouseup(d,i) {
-      d3.selectAll(".quota."+d.point.id).classed("mousedown",false);
-      d3.selectAll(".consumption."+d.point.id).classed("mousedown",false);
       d3.select("#content-panel").classed({"panel-info": true, "panel-warning": false});
     }
 
@@ -218,7 +215,7 @@
     }
 
     function click(d,i) {
-      var properties = d.point.properties;
+      var properties = d.properties;
 
       d3.select(".country-name a").text(properties.name);
 
@@ -235,7 +232,7 @@
       d3.select("#info-data-alba td").text(properties.albaAlimentos || "N/A");
       d3.select("#info-data-joint td").text(properties.jointVentures || "N/A");
 
-      d3.html("content/"+ d.point.id + ".html", function(error,content) {
+      d3.html("content/"+ d.id + ".html", function(error,content) {
         if (error) {
           console.error(error);
           d3.select("#info-country-lede button").classed("hidden", true);
