@@ -12,262 +12,44 @@
   <div id="map">
   </div>
 
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog model-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        </div>
+        <div class="modal-body">
+          <table class="table table-striped table-condensed">
+            <tr id="country-population">
+              <th width="40%">Population</th>
+              <td></td>
+            </tr>
+            <tr id="country-gdp">
+              <th>GDP</th>
+              <td></td>
+            </tr>
+            <tr id="country-corruption">
+              <th>Corruption Index</th>
+              <td></td>
+            </tr>
+            <tr id="country-system">
+              <th>System of Government</th>
+              <td></td>
+            </tr>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="lib/d3.v3.min.js" charset="utf-8"></script>
   <script src="lib/topojson.v1.min.js"></script>
   <script src="lib/jquery.min.js"></script>
   <script src="lib/bootstrap.min.js" charset="utf-8"></script>
-  <script type="text/javascript">
-    var margin = {top: 0, left: 0, bottom: 0, right: 0}
-      , width = window.innerWidth
-      , width = width - margin.left - margin.right
-      , mapRatio = .75
-      , height = Math.min(window.innerHeight, width * mapRatio)
-      , scaleFactor = 1;
-
-    var svg = d3.select("#map").append("svg")
-    		.attr("width", width)
-        .attr("height", height)
-				.attr("class", "root");
-
-    var upcomingCountries = ['SRB', 'ALB', 'DEU', 'BGR', 'FRA', 'ARM', 'ISL', 'UKR', 'SVN', 'CZE'];
-
-    function isHiddenCountry(d) {
-			return !(d.properties.continent === 'Europe' || ['CYP','CYN','TUR','ARM','AZE','GEO'].indexOf(d.id) >= 0)
-        || ['JEY','FRO','GGY','IMN','ALD','AND','MCO','LIE','SMR'].indexOf(d.id) >= 0;
-		}
-
-		var projection = d3.geo.azimuthalEqualArea()
-			.center([20, 51])
-			.scale(width * scaleFactor)
-			.translate([width / 2, height / 2]);
-
-  	var path = d3.geo.path()
-  		.projection(projection);
-
-    var radius = d3.scale.sqrt()
-      .domain([0, 200])
-      .range([0, 50]);
-
-    var voronoi = d3.geom.voronoi()
-      .x(function(d) { return pathDotCentroid(d)[0]; })
-      .y(function(d) { return pathDotCentroid(d)[1]; })
-      .clipExtent([[0, 0], [width, height]]);
-
-    function pathDotCentroid(d) {
-      if (d.id === 'FRA') {
-        return [path.centroid(d)[0]+(window.innerWidth/8.2),path.centroid(d)[1]-(window.innerWidth/10)]
-      } else if (d.id === 'HRV') {
-        return [path.centroid(d)[0],path.centroid(d)[1]-(window.innerWidth/120)]
-      } else if (d.id === 'RUS') {
-        return [path.centroid(d)[0]-(window.innerWidth/12),path.centroid(d)[1]+(window.innerWidth/3.5)]
-      } else {
-        return path.centroid(d)
-      }
-    }
-
-  	d3.json("europe.json", function(error, europe) {
-      if (error) return console.error(error);
-
-  		console.log(europe);
-
-      var countries = topojson.feature(europe, europe.objects.countries);
-
-    	svg.selectAll(".country")
-    			.data(countries.features)
-  		  .enter().append("path")
-    			.attr("class", function(d) { return "country " + (d.id === 'CYN' ? 'CYP' : d.id); })
-    			.attr("d", path)
-          .classed("upcoming", function(d) { return upcomingCountries.indexOf(d.id) >= 0; })
-					.classed("ghost", function(d) { return isHiddenCountry(d); })
-          .style("pointer-events", "all")
-          .on("mouseover", mouseover)
-          .on("mouseout", mouseout)
-          .on("touchstart", touchstart)
-          .on("mousedown", mousedown)
-          .on("mouseup", mouseup)
-          .on("click", click);
-
-			svg.append("path")
-				.datum(topojson.mesh(europe, europe.objects.countries, function(a, b) {
-					return !(isHiddenCountry(a) && isHiddenCountry(b))
-            && !(a.id === 'CYP' && b.id === 'CYN' || a.id === 'CYN' && b.id === 'CYP');
-				}))
-				.attr("d", path)
-				.attr("class", "border");
-
-			svg.append("path")
-					.datum(topojson.mesh(europe, europe.objects.countries, function(a, b) {
-						return a === b && isHiddenCountry(a)
-							|| a !== b && isHiddenCountry(a) && isHiddenCountry(b);
-					}))
-					.attr("d", path)
-					.attr("class", "border ghost");
-
-      svg.selectAll(".country-label")
-          .data(countries.features.filter(function(d) {
-            return !isHiddenCountry(d) && d.id !== 'CYN';
-          }))
-      .enter().append("text")
-        .attr("class", function(d) { return "country-label " + d.id; })
-        .attr("transform", function(d) { return "translate(" + pathDotCentroid(d) + ")"; })
-        .attr("dy", ".35em")
-        .attr("font-size", 12)
-        .text(function(d) { return ['MKD','MNE','KOS','BIH','LUX','SVN','HRV','AND','MCO','SMR','LIE'].indexOf(d.id) >= 0
-             ? d.id : d.properties.name; })
-        .attr("x", function(d) {
-          return 0;
-        })
-        .style("text-anchor", function(d) {
-          return "middle";
-        })
-        .style("pointer-events", "none");
-
-        //Initiate a group element to place the voronoi diagram in
-        /*var voronoiGroup = svg.append("g")
-          .attr("class", "voronoiWrapper");
-        voronoiGroup.selectAll("path")
-            .data(voronoi(countries.features.filter(function(d) {
-              return !isHiddenCountry(d);
-            }))) //Use vononoi() with your dataset inside
-          .enter().append("path")
-            .attr("d", function(d, i) { return "M" + d.join("L") + "Z"; })
-          .attr("class", function(d,i) { return "voronoi " + d.id; })
-            .style("stroke", "#2074A0") //I use this to look at how the cells are dispersed as a check
-            .style("fill", "none")
-            .style("stroke-width", "1px");*/
-
-        d3.select(window).on('resize', resize);
-
-        function resize() {
-            // adjust things when the window size changes
-            width = window.innerWidth;
-            width = width - margin.left - margin.right;
-            height = Math.min(window.innerHeight, width * mapRatio);
-
-            // update projection
-            projection
-                .translate([width / 2, height / 2])
-                .scale(width * scaleFactor);
-
-            // resize the map container
-            svg.attr('width', width).attr('height', height);
-
-            // resize the map
-            svg.selectAll('.country').attr('d', path);
-            svg.selectAll('.border').attr('d', path);
-            svg.selectAll(".country-label")
-              .attr("transform", function(d) { return "translate(" + pathDotCentroid(d) + ")"; });
-            svg.selectAll(".quota")
-              .attr("transform", function(d) { return "translate(" + pathDotCentroid(d) + ")"; });
-            svg.selectAll(".consumption")
-              .attr("transform", function(d) { return "translate(" + pathDotCentroid(d) + ")"; });
-
-            voronoi
-              .x(function(d) { return pathDotCentroid(d)[0]; })
-              .y(function(d) { return pathDotCentroid(d)[1]; })
-              .clipExtent([[0, 0], [width, height]]);
-
-              svg.selectAll(".voronoi")
-                  .data(voronoi(countries.features.filter(function(d) {
-                    return !isHiddenCountry(d);
-                  })))
-                  .attr("d", function(d, i) { return "M" + d.join("L") + "Z"; });
-
-              svg.select(".legend").attr("transform", "translate(" + (width - 75) + "," + 15 + ")");
-              svg.selectAll(".consumption-label.specific")
-                .attr("transform", function(d) {
-                   return "translate(" + (pathDotCentroid(d)[0])
-                      + "," + (pathDotCentroid(d)[1] - (radius(d.properties.consumptionKbd) || 0)
-                      - ('VEN' === d.id ? -10 : 'BLZ' !== d.id ? 8 : 12)) + ")";
-                 })
-               svg.selectAll(".quota-label.specific")
-                 .attr("transform", function(d) {
-                    return "translate(" + (pathDotCentroid(d)[0])
-                       + "," + (pathDotCentroid(d)[1] + ((radius(d.properties.quotaKbd))||0)
-                       + (d.id !== 'GUY' ? 8 : 12)) + ")";
-                  })
-        }
-		});
-
-    function mouseover(d,i) {
-      d3.selectAll("."+(d.id === 'CYN' ? 'CYP' : d.id)).classed("highlighted",true);
-      d3.selectAll(".legend text").classed("highlighted",true);
-    }
-
-    function mouseout(d,i) {
-      d3.selectAll("."+(d.id === 'CYN' ? 'CYP' : d.id)).classed("highlighted",false);
-      d3.selectAll(".legend text").classed("highlighted",false);
-    }
-
-    function mousedown(d,i) {
-      d3.select("#content-panel").classed("panel-info",false);
-      d3.select("#content-panel").classed("panel-warning",true);
-      d3.select("#content-panel").classed({"panel-info": false, "panel-warning": true});
-    }
-
-    function mouseup(d,i) {
-      d3.select("#content-panel").classed({"panel-info": true, "panel-warning": false});
-    }
-
-    function touchstart(d,i) {
-      d3.selectAll(".highlighted").classed("highlighted",false);
-      click(d,i);
-    }
-
-    function click(d,i) {
-      var properties = d.properties;
-
-      console.log("Clicked " + d.id)
-    }
-
-    d3.select(".intro-link a").on("click", navigateToIntro);
-    d3.select(".country-name a").on("click", navigateToCountry);
-    d3.select(".data-link a").on("click", navigateToData);
-    d3.select("#data-button").on("click", navigateToData);
-    d3.select("#info-data-container button").on("click", navigateToCountry);
-
-    function navigateToIntro() {
-      d3.select("#info-intro-content").classed("hidden", false);
-      d3.select("#info-data-container").classed("hidden", true);
-      d3.select("#info-country-lede").classed("hidden", true);
-
-      d3.select(".intro-link a").classed("inactivelink", true);
-      d3.select(".intro-link").classed("active", true);
-      d3.select(".country-name").classed("hidden", true);
-      d3.select(".data-link").classed("hidden", true);
-    }
-
-    function navigateToCountry() {
-      d3.select("#info-intro-content").classed("hidden", true);
-      d3.select("#info-data-container").classed("hidden", true);
-      d3.select("#info-country-lede").classed("hidden", false);
-
-      d3.select(".intro-link a").classed("inactivelink", false);
-      d3.select(".intro-link").classed("active", false);
-      d3.select(".country-name a").classed("inactivelink", true);
-      d3.select(".country-name").classed("active", true);
-      d3.select(".data-link a").classed("inactivelink", false);
-      d3.select(".data-link").classed("active", false);
-
-      d3.select(".country-name").classed("hidden", false);
-      d3.select(".data-link").classed("hidden", false);
-    }
-
-    function navigateToData() {
-      d3.select("#info-intro-content").classed("hidden", true);
-      d3.select("#info-data-container").classed("hidden", false);
-      d3.select("#info-country-lede").classed("hidden", true);
-
-      d3.select(".intro-link a").classed("inactivelink", false);
-      d3.select(".intro-link").classed("active", false);
-      d3.select(".country-name a").classed("inactivelink", false);
-      d3.select(".country-name").classed("active", false);
-      d3.select(".data-link a").classed("inactivelink", true);
-      d3.select(".data-link").classed("active", true);
-
-      d3.select(".country-name").classed("hidden", false);
-      d3.select(".data-link").classed("hidden", false);
-    }
-
-    </script>
+  <script src="qartido.js"></script>
 </body>
