@@ -24,10 +24,10 @@ build/ne_110m_admin_0_countries.shp: build/ne_110m_admin_0_countries.zip
 	unzip -od $(dir $@) $<
 	touch $@
 
-build/countries.json: build/ne_50m_admin_0_countries.shp
+build/countries.json: build/ne_110m_admin_0_countries.shp
 	rm -f $@
 	ogr2ogr -f GeoJSON -where "CONTINENT IN ('EUROPE') OR ADM0_A3 IN ('LBY', 'DZA', 'TUN', 'MAR', 'EGY', \
-	                                                                  'CYN', 'TUR', 'GEO', 'ARM', 'AZE', \
+	                                                                  'CYN', 'CYP', 'TUR', 'GEO', 'ARM', 'AZE', \
 																																		'KAZ', 'SYR', 'IRQ', 'IRN', 'KWT', \
 																																		'LBN', 'ISR', 'PSX', 'JOR', 'SAU', 'TKM')" $@ $<
 
