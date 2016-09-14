@@ -35,12 +35,13 @@ var voronoi = d3.geom.voronoi()
   .clipExtent([[0, 0], [width, height]]);
 
 function pathDotCentroid(d) {
+  unit = window.innerWidth/120
   if (d.id === 'FRA') {
-    return [path.centroid(d)[0]+(window.innerWidth/9),path.centroid(d)[1]-(window.innerWidth/11)]
+    return [path.centroid(d)[0]+(unit * 13.5),path.centroid(d)[1]-(unit * 11)]
   } else if (d.id === 'HRV') {
-    return [path.centroid(d)[0],path.centroid(d)[1]-(window.innerWidth/120)]
+    return [path.centroid(d)[0],path.centroid(d)[1]-unit]
   } else if (d.id === 'RUS') {
-    return [path.centroid(d)[0]-(window.innerWidth/12),path.centroid(d)[1]+(window.innerWidth/4)]
+    return [path.centroid(d)[0]-(unit * 10),path.centroid(d)[1]+(unit * 30)]
   } else {
     return path.centroid(d)
   }
