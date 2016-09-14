@@ -3,7 +3,7 @@ var margin = {top: 0, left: 0, bottom: 0, right: 0}
   , width = width - margin.left - margin.right
   , mapRatio = .7
   , height = Math.min(window.innerHeight, width * mapRatio)
-  , scaleFactor = 1;
+  , scaleFactor = 0.9;
 
 var svg = d3.select("#map").append("svg")
     .attr("width", width)
@@ -18,7 +18,7 @@ function isHiddenCountry(d) {
 }
 
 var projection = d3.geo.azimuthalEqualArea()
-  .center([20, 51])
+  .center([20, 53])
   .scale(width * scaleFactor)
   .translate([width / 2, height / 2]);
 
