@@ -217,47 +217,7 @@
     function click(d,i) {
       var properties = d.properties;
 
-      d3.select(".country-name a").text(properties.name);
-
-      // populate content
-      d3.select("#info-data-country td").text(properties.name);
-      d3.select("#myModal .modal-title").text(properties.name);
-      d3.select("#info-data-consumption td").text((properties.consumptionKbd + " thousand barrels/day") || "N/A");
-      d3.select("#info-data-quota td").text(properties.quotaKbd ? (properties.quotaKbd + " thousand barrels/day") : "N/A");
-      d3.select("#info-data-actual td").text(!properties.quotaKbd ? "N/A" : properties.actualKbd ? (properties.actualKbd + " thousand barrels/day") : "none");
-      d3.select("#info-data-products td").text(properties.products || "N/A");
-      d3.select("#info-data-joined-year td").text(properties.joinedYear || "N/A");
-      d3.select("#info-data-infra td").text(properties.infraProjects || "N/A");
-      d3.select("#info-data-social td").text(properties.socialProjects || "N/A");
-      d3.select("#info-data-alba td").text(properties.albaAlimentos || "N/A");
-      d3.select("#info-data-joint td").text(properties.jointVentures || "N/A");
-
-      d3.html("content/"+ d.id + ".html", function(error,content) {
-        if (error) {
-          console.error(error);
-          d3.select("#info-country-lede button").classed("hidden", true);
-        } else {
-          d3.select("#info-country-lede button").classed("hidden", false);
-        }
-
-        d3.select("#info-country-lede .content").html(error ?
-          "<p>No content can be found for: " + properties.name + "</p>" :
-          d3.select(content).select(".lede").html());
-
-        g_content = content;
-
-        if(d3.select(content).select(".full-story").empty()) {
-          d3.select("#info-country-lede button").classed("hidden", true);
-        } else {
-          d3.select("#myModal .modal-body").html(error ?
-            "<p>WTH?</p>" :
-            d3.select(content).select(".full-story").html());
-        }
-
-        console.log(content);
-
-        navigateToCountry();
-      });
+      console.log("Clicked " + d.id)
     }
 
     d3.select(".intro-link a").on("click", navigateToIntro);
