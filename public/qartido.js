@@ -63,7 +63,7 @@ d3.json("europe.json", function(error, europe) {
       .style("pointer-events", "all")
       .on("mouseover", mouseover)
       .on("mouseout", mouseout)
-      .on("touchstart", touchstart)
+      //.on("touchend", touchend)
       .on("mousedown", mousedown)
       .on("mouseup", mouseup)
       .on("click", click);
@@ -172,21 +172,21 @@ function mouseout(d,i) {
 }
 
 function mousedown(d,i) {
-  d3.select("#content-panel").classed("panel-info",false);
-  d3.select("#content-panel").classed("panel-warning",true);
-  d3.select("#content-panel").classed({"panel-info": false, "panel-warning": true});
 }
 
 function mouseup(d,i) {
-  d3.select("#content-panel").classed({"panel-info": true, "panel-warning": false});
 }
 
-function touchstart(d,i) {
-  d3.selectAll(".highlighted").classed("highlighted",false);
-  click(d,i);
+function touchend(d,i) {
+  //d3.selectAll(".highlighted").classed("highlighted",false);
+  click0(d,i);
 }
 
 function click(d,i) {
+  click0(d,i);
+}
+
+function click0(d,i) {
   var properties = d.properties;
 
   $('#myModal').modal('show');
