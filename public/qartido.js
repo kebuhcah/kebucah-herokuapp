@@ -34,6 +34,8 @@ var voronoi = d3.geom.voronoi()
   .y(function(d) { return pathDotCentroid(d)[1]; })
   .clipExtent([[0, 0], [width, height]]);
 
+var parlgov = {};
+
 function pathDotCentroid(d) {
   unit = window.innerWidth/120
   if (d.id === 'FRA') {
@@ -147,7 +149,13 @@ d3.json("europe.json", function(error, europe) {
               })
     }
 
-    d3.csv('national_elections.csv')
+    d3.json('parlgov.json', function(error, json) {
+      if (error) return console.error(error);
+
+      parlgov = json;
+
+      console.log(parlgov);
+    })
 });
 
 function mouseover(d,i) {
@@ -174,16 +182,27 @@ function click(d,i) {
 }
 
 function click0(d,i) {
+  if (isHiddenCountry(d) || d.id === 'CYN') return;
+
   var properties = d.properties;
 
   $('#myModal').modal('show');
   $('#myModalLabel').text(properties.name);
 
   console.log(properties);
+
+  d3.select("#country-election-date td").text(parlgov[d.id] ? parlgov[d.id].election_date.substring(0,10) : 'unknown');
+  d3.select("#country-ruling-party td").html(parlgov[d.id] ? (parlgov[d.id].parties[0].party_name_english
+    + ' <br> (' + parlgov[d.id].parties[0].party_name + ')') : 'unknown');
+  d3.select("#country-ruling-party-family td").text(parlgov[d.id] ? parlgov[d.id].parties[0].family_name : 'unknown');
+  d3.select("#country-ruling-party-seats td").text(parlgov[d.id] ? (parlgov[d.id].parties[0].seats
+    + ' / ' + parlgov[d.id].seats_total + ' (' + d3.round(parlgov[d.id].parties[0].seats/parlgov[d.id].seats_total*100,1) + '%)') : 'unknown');
+  d3.select("#country-ruling-party-votes td").text(parlgov[d.id] ? parlgov[d.id].parties[0].vote_share + '%' : 'unknown');
   d3.select("#country-population td").text(d3.format(',d')(properties.population));
   d3.select("#country-gdp td").text(d3.format('$,d')(properties.gdpMillionUsd * 1000000));
   d3.select("#country-corruption td").text(properties.corruptionIndex);
   d3.select("#country-system td").text(properties.systemOfGovernment);
+
 
 
   console.log("Clicked " + d.id)
