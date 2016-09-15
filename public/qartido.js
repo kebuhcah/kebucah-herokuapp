@@ -95,20 +95,6 @@ d3.json("europe.json", function(error, europe) {
     })
     .style("pointer-events", "none");
 
-    //Initiate a group element to place the voronoi diagram in
-    /*var voronoiGroup = svg.append("g")
-      .attr("class", "voronoiWrapper");
-    voronoiGroup.selectAll("path")
-        .data(voronoi(countries.features.filter(function(d) {
-          return !isHiddenCountry(d);
-        }))) //Use vononoi() with your dataset inside
-      .enter().append("path")
-        .attr("d", function(d, i) { return "M" + d.join("L") + "Z"; })
-      .attr("class", function(d,i) { return "voronoi " + d.id; })
-        .style("stroke", "#2074A0") //I use this to look at how the cells are dispersed as a check
-        .style("fill", "none")
-        .style("stroke-width", "1px");*/
-
     d3.select(window).on('resize', resize);
 
     function resize() {
@@ -160,6 +146,8 @@ d3.json("europe.json", function(error, europe) {
                    + (d.id !== 'GUY' ? 8 : 12)) + ")";
               })
     }
+
+    d3.csv('national_elections.csv')
 });
 
 function mouseover(d,i) {
@@ -179,8 +167,6 @@ function mouseup(d,i) {
 }
 
 function touchend(d,i) {
-  //d3.selectAll(".highlighted").classed("highlighted",false);
-  click0(d,i);
 }
 
 function click(d,i) {
@@ -201,22 +187,4 @@ function click0(d,i) {
 
 
   console.log("Clicked " + d.id)
-}
-
-d3.select(".intro-link a").on("click", navigateToIntro);
-d3.select(".country-name a").on("click", navigateToCountry);
-d3.select(".data-link a").on("click", navigateToData);
-d3.select("#data-button").on("click", navigateToData);
-d3.select("#info-data-container button").on("click", navigateToCountry);
-
-function navigateToIntro() {
-
-}
-
-function navigateToCountry() {
-
-}
-
-function navigateToData() {
-
 }
