@@ -1,9 +1,10 @@
 var margin = {top: 0, left: 0, bottom: 0, right: 0}
+  , edges = { top: 72, left: -25, bottom: 24, right: 50 }
   , width = window.innerWidth
   , width = width - margin.left - margin.right
-  , mapRatio = .7
+  , mapRatio = .7, widthCenterRatio = .5, heightCenterRatio = .6
   , height = Math.min(window.innerHeight, width * mapRatio)
-  , scaleFactor = 0.9;
+  , scaleFactor = 0.95;
 
 var svg = d3.select("#map").append("svg")
     .attr("width", width)
@@ -18,9 +19,9 @@ function isHiddenCountry(d) {
 }
 
 var projection = d3.geo.azimuthalEqualArea()
-  .center([20, 53])
+  .center([20, 48.5])
   .scale(width * scaleFactor)
-  .translate([width / 2, height / 2]);
+  .translate([width * widthCenterRatio, height * heightCenterRatio]);
 
 var path = d3.geo.path()
   .projection(projection);
@@ -39,7 +40,7 @@ var parlgov = {};
 function pathDotCentroid(d) {
   unit = window.innerWidth/120
   if (d.id === 'FRA') {
-    return [path.centroid(d)[0]+(unit * 13.5),path.centroid(d)[1]-(unit * 11)]
+    return [path.centroid(d)[0]+(unit * 14),path.centroid(d)[1]-(unit * 11.5)]
   } else if (d.id === 'HRV') {
     return [path.centroid(d)[0],path.centroid(d)[1]-unit]
   } else if (d.id === 'RUS') {
@@ -52,9 +53,11 @@ function pathDotCentroid(d) {
 d3.json("europe.json", function(error, europe) {
   if (error) return console.error(error);
 
-  console.log(europe);
+
 
   var countries = topojson.feature(europe, europe.objects.countries);
+
+  console.log(countries);
 
   svg.selectAll(".country")
       .data(countries.features)
@@ -107,7 +110,7 @@ d3.json("europe.json", function(error, europe) {
 
         // update projection
         projection
-            .translate([width / 2, height / 2])
+            .translate([width * widthCenterRatio, height * heightCenterRatio])
             .scale(width * scaleFactor);
 
         // resize the map container
@@ -118,35 +121,6 @@ d3.json("europe.json", function(error, europe) {
         svg.selectAll('.border').attr('d', path);
         svg.selectAll(".country-label")
           .attr("transform", function(d) { return "translate(" + pathDotCentroid(d) + ")"; });
-        svg.selectAll(".quota")
-          .attr("transform", function(d) { return "translate(" + pathDotCentroid(d) + ")"; });
-        svg.selectAll(".consumption")
-          .attr("transform", function(d) { return "translate(" + pathDotCentroid(d) + ")"; });
-
-        voronoi
-          .x(function(d) { return pathDotCentroid(d)[0]; })
-          .y(function(d) { return pathDotCentroid(d)[1]; })
-          .clipExtent([[0, 0], [width, height]]);
-
-          svg.selectAll(".voronoi")
-              .data(voronoi(countries.features.filter(function(d) {
-                return !isHiddenCountry(d);
-              })))
-              .attr("d", function(d, i) { return "M" + d.join("L") + "Z"; });
-
-          svg.select(".legend").attr("transform", "translate(" + (width - 75) + "," + 15 + ")");
-          svg.selectAll(".consumption-label.specific")
-            .attr("transform", function(d) {
-               return "translate(" + (pathDotCentroid(d)[0])
-                  + "," + (pathDotCentroid(d)[1] - (radius(d.properties.consumptionKbd) || 0)
-                  - ('VEN' === d.id ? -10 : 'BLZ' !== d.id ? 8 : 12)) + ")";
-             })
-           svg.selectAll(".quota-label.specific")
-             .attr("transform", function(d) {
-                return "translate(" + (pathDotCentroid(d)[0])
-                   + "," + (pathDotCentroid(d)[1] + ((radius(d.properties.quotaKbd))||0)
-                   + (d.id !== 'GUY' ? 8 : 12)) + ")";
-              })
     }
 
     d3.json('parlgov.json', function(error, json) {
@@ -202,8 +176,6 @@ function click0(d,i) {
   d3.select("#country-gdp td").text(d3.format('$,d')(properties.gdpMillionUsd * 1000000));
   d3.select("#country-corruption td").text(properties.corruptionIndex);
   d3.select("#country-system td").text(properties.systemOfGovernment);
-
-
 
   console.log("Clicked " + d.id)
 }
