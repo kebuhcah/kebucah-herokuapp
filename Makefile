@@ -1,27 +1,21 @@
 all: public/europe.json
 
-build/ne_50m_admin_0_countries.zip:
-	mkdir -p $(dir $@)
-	curl -o $@ http://www.naturalearthdata.com/download/50m/cultural/$(notdir $@)
-
-build/ne_50m_admin_0_countries.shp: build/ne_50m_admin_0_countries.zip
-	unzip -od $(dir $@) $<
-	touch $@
-
-build/ne_10m_admin_0_countries.zip:
-	mkdir -p $(dir $@)
-	curl -o $@ http://www.naturalearthdata.com/download/10m/cultural/$(notdir $@)
-
-build/ne_10m_admin_0_countries.shp: build/ne_10m_admin_0_countries.zip
-	unzip -od $(dir $@) $<
-	touch $@
-
 build/ne_110m_admin_0_countries.zip:
 	mkdir -p $(dir $@)
 	curl -o $@ http://www.naturalearthdata.com/download/110m/cultural/$(notdir $@)
 
 build/ne_110m_admin_0_countries.shp: build/ne_110m_admin_0_countries.zip
 	unzip -od $(dir $@) $<
+	touch $@
+
+build/2015_CPI_DataMethodologyZIP.zip:
+	mkdir -p $(dir $@)
+	curl -o $@ http://files.transparency.org/content/download/1950/12812/file/$(notdir $@)
+
+build/CPI_2015_data.xlsx: build/2015_CPI_DataMethodologyZIP.zip
+	unzip -od $(dir $@) $<
+	mv 'build/Data & methodology/Data/CPI 2015_data.xlsx' $@
+	rm -r 'build/Data & methodology/'
 	touch $@
 
 build/countries.json: build/ne_110m_admin_0_countries.shp
