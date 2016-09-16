@@ -1,14 +1,4 @@
 country_name_short,country_name,election_type,election_date,vote_share,seats,seats_total,party_name_short,party_name,party_name_english,left_right,country_id,election_id,previous_parliament_election_id,previous_cabinet_id,party_id,party_name_ascii,family_name_short,family_name,state_market,liberty_authority,eu_anti_pro,family_id
-AUS,Australia,parliament,2013-09-07,32.02,58.0,150,LPA,Liberal Party of Australia,Liberal Party of Australia,7.3903,33,804,246.0,1061.0,1411,Liberal Party of Australia,con,Conservative,8.4211,6.9825,7.8,26
-AUS,Australia,parliament,2013-09-07,33.38,55.0,150,ALP,Australian Labor Party,Australian Labor Party,3.8833,33,804,246.0,1061.0,1253,Australian Labor Party,soc,Social democracy,4.0351,3.2632,8.1,11
-AUS,Australia,parliament,2013-09-07,8.92,22.0,150,LNPQ,Liberal National Party of Queensland,Liberal National Party of Queensland,6.0,33,804,246.0,1061.0,154,Liberal National Party of Queensland,lib,Liberal,6.7,3.5,8.7,6
-AUS,Australia,parliament,2013-09-07,4.29,9.0,150,NCP|NPA,National (Country) Party | National Party of Australia,National (Country) Party | National Party of Australia,7.8222,33,804,246.0,1061.0,184,National (Country) Party | National Party of Australia,con,Conservative,6.2456,8.4561,7.8,26
-AUS,Australia,parliament,2013-09-07,1.37,2.0,150,none,no party affiliation,no party affiliation,,33,804,246.0,1061.0,1396,no party affiliation,none,no family,,,,12
-AUS,Australia,parliament,2013-09-07,0.32,1.0,150,CouLP,Country Liberal Party,Country Liberal Party,6.0,33,804,246.0,1061.0,215,Country Liberal Party,lib,Liberal,6.7,3.5,8.7,6
-AUS,Australia,parliament,2013-09-07,8.65,1.0,150,AG,Australian Greens,Australian Greens,1.5439,33,804,246.0,1061.0,751,Australian Greens,eco,Green/Ecologist,1.2982,0.5614,6.5,19
-AUS,Australia,parliament,2013-09-07,1.04,1.0,150,Katter,Katter's Australian Party,Katter's Australian Party,3.3,33,804,246.0,1061.0,2258,Katter's Australian Party,soc,Social democracy,3.5,3.5,8.1,11
-AUS,Australia,parliament,2013-09-07,5.49,1.0,150,PUP,Palmer United Party,Palmer United Party,6.0,33,804,246.0,1061.0,2259,Palmer United Party,lib,Liberal,6.7,3.5,8.7,6
-AUS,Australia,parliament,2013-09-07,1.41,0.0,150,FFP,Family First Party,Family First Party,7.4,33,804,246.0,1061.0,446,Family First Party,con,Conservative,6.4,6.9,7.8,26
 AUT,Austria,parliament,2013-09-29,26.8,52.0,183,SPO,Sozialdemokratische Partei Österreichs,Social Democratic Party of Austria,3.7293,59,802,607.0,268.0,973,Sozialdemokratische Partei Oesterreichs,soc,Social democracy,3.4728,3.4766,8.4495,11
 AUT,Austria,parliament,2013-09-29,24.0,47.0,183,OVP,Österreichische Volkspartei,Austrian People's Party,6.4733,59,802,607.0,268.0,1013,Oesterreichische Volkspartei,chr,Christian democracy,6.9485,7.6198,8.8451,3
 AUT,Austria,parliament,2013-09-29,20.5,40.0,183,FPO,Freiheitliche Partei Österreichs,Freedom Party of Austria,8.3494,59,802,607.0,268.0,50,Freiheitliche Partei Oesterreichs,right,Right-wing,6.3291,8.5149,1.9815,40
@@ -41,12 +31,6 @@ BGR,Bulgaria,parliament,2014-10-05,4.52,11.0,240,Ataka,Ataka,Attack,5.46,10,840,
 BGR,Bulgaria,parliament,2014-10-05,4.15,11.0,240,ABV,Alternativa za balgarsko vazrazhdane,Alternative for Bulgarian Revival,3.3,10,840,799.0,1139.0,2364,Alternativa za balgarsko vazrazhdane,soc,Social democracy,3.5,3.5,8.1,11
 BGR,Bulgaria,parliament,2014-10-05,1.19,0.0,240,D21,Dvizhenie 21,Movement 21,3.3,10,840,799.0,1139.0,2379,Dvizhenie 21,soc,Social democracy,3.5,3.5,8.1,11
 BGR,Bulgaria,parliament,2014-10-05,1.14,0.0,240,GN,Glas Naroden,People's Voice,,10,840,799.0,1139.0,2214,Glas Naroden,spec,Special issue,,,,16
-CAN,Canada,parliament,2015-10-19,39.47,184.0,338,LP,Liberal Party of Canada,Liberal Party of Canada,5.0552,29,994,703.0,919.0,368,Liberal Party of Canada,lib,Liberal,5.3509,3.4615,8.7,6
-CAN,Canada,parliament,2015-10-19,31.89,99.0,338,CPC,Conservative Party of Canada,Conservative Party of Canada,8.6608,29,994,703.0,919.0,1255,Conservative Party of Canada,con,Conservative,8.7668,9.0688,7.8,26
-CAN,Canada,parliament,2015-10-19,19.71,44.0,338,CCF|NDP,Co-operative Commonwealth Federation | New Democratic Party,Co-operative Commonwealth Federation | New Democratic Party,2.46,29,994,703.0,919.0,296,Co-operative Commonwealth Federation | New Democratic Party,soc,Social democracy,1.9195,1.1134,8.1,11
-CAN,Canada,parliament,2015-10-19,4.66,10.0,338,BQ,Bloc Québécois,Quebec Bloc,3.0215,29,994,703.0,919.0,448,Bloc Quebecois,soc,Social democracy,3.1207,2.2063,8.1,11
-CAN,Canada,parliament,2015-10-19,3.45,1.0,338,GPC,Green Party of Canada,Green Party of Canada,1.9018,29,994,703.0,919.0,1259,Green Party of Canada,eco,Green/Ecologist,2.2467,2.0327,6.5,19
-CAN,Canada,parliament,2015-10-19,0.23,0.0,338,none,no party affiliation,no party affiliation,,29,994,703.0,919.0,1189,no party affiliation,none,no family,,,,12
 CHE,Switzerland,parliament,2015-10-18,29.39,65.0,200,SVP-UDC,Schweizerische Volkspartei – Union Démocratique du Centre,Swiss People's Party,7.3575,40,995,779.0,989.0,750,Schweizerische Volkspartei -- Union Democratique du Centre,agr,Agrarian,8.9684,8.3385,0.6368,2
 CHE,Switzerland,parliament,2015-10-18,18.84,43.0,200,SP-PS,Sozialdemokratische Partei der Schweiz – Parti Socialiste Suisse,Social Democratic Party of Switzerland,1.8319,40,995,779.0,989.0,35,Sozialdemokratische Partei der Schweiz -- Parti Socialiste Suisse,soc,Social democracy,1.7579,1.2281,9.0614,11
 CHE,Switzerland,parliament,2015-10-18,16.4,33.0,200,FDP-PRD,Freisinnig-Demokratische Partei der Schweiz – Parti Radical-Democratique Suisse,Radical Democratic Party,6.3249,40,995,779.0,989.0,26,Freisinnig-Demokratische Partei der Schweiz -- Parti Radical-Democratique Suisse,lib,Liberal,8.0105,3.4159,6.4439,6
@@ -224,18 +208,6 @@ ISL,Iceland,parliament,2013-04-27,3.02,0.0,63,FH,Flokkur Heimilanna,Households P
 ISL,Iceland,parliament,2013-04-27,2.46,0.0,63,IDP,Lýðræðisvaktin,Iceland Democratic Party,2.5,56,798,36.0,651.0,2208,Lydraedisvaktin,eco,Green/Ecologist,2.5,1.8,6.5,19
 ISL,Iceland,parliament,2013-04-27,1.73,0.0,63,HG,Hægri Grænir flokkur fólksins,RIght-Green People's Party,6.0,56,798,36.0,651.0,2209,Haegri Graenir flokkur folksins,lib,Liberal,6.7,3.5,8.7,6
 ISL,Iceland,parliament,2013-04-27,1.07,0.0,63,Rebo,Regnboginn,Rainbow,1.2,56,798,36.0,651.0,2210,Regnboginn,com,Communist/Socialist,1.4,3.0,3.3,14
-ISR,Israel,parliament,2015-03-17,23.4,30.0,120,L,Likud,The Consolidation,6.6788,34,852,815.0,1155.0,678,Likud,con,Conservative,7.4912,6.0,7.8,26
-ISR,Israel,parliament,2015-03-17,18.67,24.0,120,HM|HA,HaMa'arakh | HaAvoda,Alignment | Labor,3.3,34,852,815.0,1155.0,244,HaMa'arakh | HaAvoda,soc,Social democracy,3.5,3.5,8.1,11
-ISR,Israel,parliament,2015-03-17,10.61,13.0,120,Raam,al-Qā'ima al-'Arabiyya al-Muwaḥḥada,United Arab List,,34,852,815.0,1155.0,1846,al-Qa'ima al-'Arabiyya al-Muwahhada,spec,Special issue,,,,16
-ISR,Israel,parliament,2015-03-17,8.82,11.0,120,YA,Yesh Atid,There is a Future,6.0,34,852,815.0,1155.0,2321,Yesh Atid,lib,Liberal,6.7,3.5,8.7,6
-ISR,Israel,parliament,2015-03-17,7.49,10.0,120,Kulanu,Kulanu,All of Us,6.0,34,852,815.0,1155.0,2410,Kulanu,lib,Liberal,6.7,3.5,8.7,6
-ISR,Israel,parliament,2015-03-17,6.74,8.0,120,Mafdal,Miflaga Datit Leumit,National Religious Party,8.6207,34,852,815.0,1155.0,214,Miflaga Datit Leumit,right,Right-wing,3.9035,9.3466,2.4,40
-ISR,Israel,parliament,2015-03-17,5.74,7.0,120,Shas,Shomrei Sfarad,Sfarad's guards of the Torah,7.0417,34,852,815.0,1155.0,788,Shomrei Sfarad,spec,Special issue,2.1637,9.6842,,16
-ISR,Israel,parliament,2015-03-17,5.1,6.0,120,YB,Yisrael Beiteinu,Israel is Our Home,8.7,34,852,815.0,1155.0,1816,Yisrael Beiteinu,right,Right-wing,5.9,8.6,2.4,40
-ISR,Israel,parliament,2015-03-17,4.99,6.0,120,YH,Yahadut HaTora HaMeuhedet,United Torah Judaism,6.9396,34,852,815.0,1155.0,1303,Yahadut HaTora HaMeuhedet,con,Conservative,2.8146,9.7556,7.8,26
-ISR,Israel,parliament,2015-03-17,3.93,5.0,120,Meretz,Meretz,Energy,1.7786,34,852,815.0,1155.0,1419,Meretz,soc,Social democracy,3.2632,0.6667,8.1,11
-ISR,Israel,parliament,2015-03-17,1.12,0.0,120,AlYa,Ale Yarok,Green Leaf,2.5,34,852,815.0,1155.0,2323,Ale Yarok,eco,Green/Ecologist,2.5,1.8,6.5,19
-ISR,Israel,parliament,2015-03-17,2.97,0.0,120,Yachad,Yachad,Together,8.7,34,852,815.0,1155.0,2411,Yachad,right,Right-wing,5.9,8.6,2.4,40
 ITA,Italy,parliament,2013-02-25,25.42,292.0,617,PD,Partito Democratico,Democratic Party,2.6216,26,789,111.0,983.0,382,Partito Democratico,soc,Social democracy,2.9825,2.0943,7.834,11
 ITA,Italy,parliament,2013-02-25,25.55,108.0,617,M5S,Movimento 5 Stelle,Five Star Movement,2.5,26,789,111.0,983.0,2155,Movimento 5 Stelle,eco,Green/Ecologist,2.5,1.8,6.5,19
 ITA,Italy,parliament,2013-02-25,21.56,97.0,617,FI-PdL,Forza Italia – Il Popolo della Libertà,Go Italy -- The People of Freedom,7.1459,26,789,111.0,983.0,596,Forza Italia -- Il Popolo della Liberta,con,Conservative,7.913,6.5983,5.0946,26
@@ -249,16 +221,6 @@ ITA,Italy,parliament,2013-02-25,0.43,5.0,617,SVP,Südtiroler Volkspartei,South T
 ITA,Italy,parliament,2013-02-25,2.25,0.0,617,RC,Rivoluzione Civile,Civil Revolution,1.2,26,789,111.0,983.0,2157,Rivoluzione Civile,com,Communist/Socialist,1.4,3.0,3.3,14
 ITA,Italy,parliament,2013-02-25,1.11,0.0,617,FiD,Fermare il Declino,Stop the Decline,6.0,26,789,111.0,983.0,2158,Fermare il Declino,lib,Liberal,6.7,3.5,8.7,6
 ITA,Italy,parliament,2013-02-25,,0.0,617,FLI,Futuro e libertà per l'Italia,Future and Freedom for Italy,7.4,26,789,111.0,983.0,1477,Futuro e liberta per l'Italia,con,Conservative,6.4,6.9,7.8,26
-JPN,Japan,parliament,2014-12-14,33.11,290.0,475,LDP,Jiyū Minshutō,Liberal Democratic Party,8.0252,5,850,788.0,1044.0,1193,Jiyu Minshuto,con,Conservative,4.8094,7.7747,7.8,26
-JPN,Japan,parliament,2014-12-14,18.33,73.0,475,DPJ,Minshutō,Democratic Party of Japan,5.5717,5,850,788.0,1044.0,439,Minshuto,con,Conservative,5.06,4.1541,7.8,26
-JPN,Japan,parliament,2014-12-14,15.72,41.0,475,JReP,Nippon Ishin no Kai,Japan Restoration Party,7.4,5,850,788.0,1044.0,2136,Nippon Ishin no Kai,con,Conservative,6.4,6.9,7.8,26
-JPN,Japan,parliament,2014-12-14,13.71,35.0,475,K,Kōmeitō,Komeito Party,5.6871,5,850,788.0,1044.0,837,Komeito,con,Conservative,4.4549,6.25,7.8,26
-JPN,Japan,parliament,2014-12-14,11.37,21.0,475,JCP,Nihon Kyōsan-tō,Japan Communist Party,1.148,5,850,788.0,1044.0,1540,Nihon Kyosan-to,com,Communist/Socialist,4.072,4.032,3.3,14
-JPN,Japan,parliament,2014-12-14,,9.0,475,none,no party affiliation,no party affiliation,,5,850,788.0,1044.0,905,no party affiliation,none,no family,,,,12
-JPN,Japan,parliament,2014-12-14,2.46,2.0,475,JSP,Nihon Shakai-tō,Japan Socialist Party,2.6344,5,850,788.0,1044.0,940,Nihon Shakai-to,soc,Social democracy,4.1367,3.121,8.1,11
-JPN,Japan,parliament,2014-12-14,2.65,2.0,475,PFG,Jisedai No Tou,Party for Future Generations,8.7,5,850,788.0,1044.0,2404,Jisedai No Tou,right,Right-wing,5.9,8.6,2.4,40
-JPN,Japan,parliament,2014-12-14,1.93,2.0,475,PLFP,Kokumin no Seikatsu ga Daiichi | Seikatsu no Tō,People's Life First Party,7.4,5,850,788.0,1044.0,2069,Kokumin no Seikatsu ga Daiichi | Seikatsu no To,con,Conservative,6.4,6.9,7.8,26
-JPN,Japan,parliament,2014-12-14,0.03,0.0,475,no-seat,no seat,no seat,,5,850,788.0,1044.0,2141,no seat,none,no family,,,,12
 LTU,Lithuania,parliament,2012-10-14,18.37,37.0,141,LSDP,Lietuvos socialdemokratų partija,Lithuanian Social Democratic Party,3.1972,15,786,646.0,1026.0,1277,Lietuvos socialdemokratu partija,soc,Social democracy,3.8262,5.2732,9.0702,11
 LTU,Lithuania,parliament,2012-10-14,15.08,33.0,141,TS-LK,Tėvynės Sąjunga,Homeland Union,7.4004,15,786,646.0,1026.0,1045,Tevynes Sajunga,con,Conservative,6.694,7.1939,9.7006,26
 LTU,Lithuania,parliament,2012-10-14,19.82,29.0,141,DP,Darbo Partija,Labour Party,3.86,15,786,646.0,1026.0,581,Darbo Partija,lib,Liberal,4.29,5.8,8.5667,6
@@ -313,15 +275,6 @@ NOR,Norway,parliament,2013-09-09,5.2,9.0,169,V,Venstre,Liberal Party of Norway,5
 NOR,Norway,parliament,2013-09-09,4.1,7.0,169,SV,Sosialistisk Venstreparti,Socialist Left Party,1.5839,9,801,285.0,551.0,81,Sosialistisk Venstreparti,com,Communist/Socialist,1.3534,1.5038,1.1568,14
 NOR,Norway,parliament,2013-09-09,2.8,1.0,169,MDG,Miljøpartiet De Grønne,Green Party,2.5,9,801,285.0,551.0,2254,Miljopartiet De Gronne,eco,Green/Ecologist,2.5,1.8,6.5,19
 NOR,Norway,parliament,2013-09-09,1.1,0.0,169,RV,Rød Valgallianse,Red Electoral Alliance,0.4089,9,801,285.0,551.0,1638,Rod Valgallianse,com,Communist/Socialist,0.5764,1.0,0.4511,14
-NZL,New Zealand,parliament,2014-09-20,47.04,60.0,121,NP,National Party,National Party,6.7193,11,829,776.0,986.0,997,National Party,con,Conservative,7.2299,6.9,7.8,26
-NZL,New Zealand,parliament,2014-09-20,25.13,32.0,121,LP,Labour Party,Labour Party,4.483,11,829,776.0,986.0,878,Labour Party,soc,Social democracy,3.9889,3.5,8.1,11
-NZL,New Zealand,parliament,2014-09-20,10.7,14.0,121,Greens,Green Party,Green Party,1.7729,11,829,776.0,986.0,1171,Green Party,eco,Green/Ecologist,2.2438,1.8,6.5,19
-NZL,New Zealand,parliament,2014-09-20,8.66,11.0,121,NZFP,New Zealand First Party,New Zealand First Party,6.0388,11,829,776.0,986.0,891,New Zealand First Party,con,Conservative,5.4386,6.9,7.8,26
-NZL,New Zealand,parliament,2014-09-20,1.32,2.0,121,MP,Māori Party,Maori Party,,11,829,776.0,986.0,114,Maori Party,spec,Special issue,,,,16
-NZL,New Zealand,parliament,2014-09-20,0.69,1.0,121,ACT,ACT New Zealand,ACT New Zealand,9.0263,11,829,776.0,986.0,617,ACT New Zealand,lib,Liberal,8.9751,3.5,8.7,6
-NZL,New Zealand,parliament,2014-09-20,0.22,1.0,121,UFNZ,United Future New Zealand,United Future New Zealand,6.1219,11,829,776.0,986.0,1313,United Future New Zealand,lib,Liberal,6.3158,3.5,8.7,6
-NZL,New Zealand,parliament,2014-09-20,3.97,0.0,121,CP,Conservative Party of New Zealand,Conservatice Party of New Zealand,7.4,11,829,776.0,986.0,1973,Conservative Party of New Zealand,con,Conservative,6.4,6.9,7.8,26
-NZL,New Zealand,parliament,2014-09-20,1.42,0.0,121,Mana,Mana Party,Mana Party,,11,829,776.0,986.0,1972,Mana Party,spec,Special issue,,,,16
 POL,Poland,parliament,2015-10-25,37.58,235.0,460,PiS,Prawo i Sprawiedliwość,Law and Justice,7.6997,74,996,766.0,1146.0,528,Prawo i Sprawiedliwosc,con,Conservative,4.0466,8.2514,5.4813,26
 POL,Poland,parliament,2015-10-25,24.09,138.0,460,PO,Platforma Obywatelska,Civic Platform,6.2355,74,996,766.0,1146.0,512,Platforma Obywatelska,con,Conservative,8.236,3.7102,9.3705,26
 POL,Poland,parliament,2015-10-25,8.81,42.0,460,K,Kukiz'15,Kukiz'15,8.7,74,996,766.0,1146.0,2600,Kukiz'15,right,Right-wing,5.9,8.6,2.4,40
