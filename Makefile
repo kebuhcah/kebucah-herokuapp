@@ -18,6 +18,14 @@ build/CPI_2015_data.xlsx: build/2015_CPI_DataMethodologyZIP.zip
 	rm -r 'build/Data & methodology/'
 	touch $@
 
+build/WDI_csv.zip:
+	mkdir -p $(dir $@)
+	curl -o $@ http://databank.worldbank.org/data/download/$(notdir $@)
+
+build/WDI_Data.csv: build/WDI_csv.zip
+	unzip -od $(dir $@) $<
+	touch $@
+
 build/countries.json: build/ne_110m_admin_0_countries.shp
 	rm -f $@
 	ogr2ogr -f GeoJSON -where "CONTINENT IN ('EUROPE') OR ADM0_A3 IN ('LBY', 'DZA', 'TUN', 'MAR', 'EGY', \
