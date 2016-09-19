@@ -26,7 +26,8 @@ build/countries.json: build/ne_110m_admin_0_countries.shp
 																																		'LBN', 'ISR', 'PSX', 'JOR', 'SAU', 'TKM')" $@ $<
 
 refdata: refdata/europe_country_doc.csv refdata/europe_party_doc.csv refdata/europe_election_doc.csv \
-	refdata/view_election.csv refdata/view_party.csv refdata/view_cabinet.csv
+	refdata/view_election.csv refdata/view_party.csv refdata/view_cabinet.csv refdata/country.csv \
+	refdata/politician_president.csv refdata/external_country_iso.csv
 
 refdata/europe_country_doc.csv:
 	wget --no-check-certificate --output-document=$@ \
@@ -42,15 +43,27 @@ refdata/europe_election_doc.csv:
 
 refdata/view_election.csv:
 	wget --no-check-certificate --output-document=$@ \
-	'http://www.parlgov.org/static/data/development-utf-8/view_election.csv'
+	http://www.parlgov.org/static/data/development-utf-8/$(notdir $@)
 
 refdata/view_party.csv:
 	wget --no-check-certificate --output-document=$@ \
-	'http://www.parlgov.org/static/data/development-utf-8/view_party.csv'
+	http://www.parlgov.org/static/data/development-utf-8/$(notdir $@)
 
 refdata/view_cabinet.csv:
 	wget --no-check-certificate --output-document=$@ \
-	'http://www.parlgov.org/static/data/development-utf-8/view_cabinet.csv'
+	http://www.parlgov.org/static/data/development-utf-8/$(notdir $@)
+
+refdata/politician_president.csv:
+	wget --no-check-certificate --output-document=$@ \
+	http://www.parlgov.org/static/data/development-utf-8/$(notdir $@)
+
+refdata/country.csv:
+	wget --no-check-certificate --output-document=$@ \
+	http://www.parlgov.org/static/data/development-utf-8/$(notdir $@)
+
+refdata/external_country_iso.csv:
+	wget --no-check-certificate --output-document=$@ \
+	http://www.parlgov.org/static/data/development-utf-8/$(notdir $@)
 
 public/europe.json: build/countries.json refdata/europe_country_doc.csv
 	topojson -o $@ --id-property 'adm0_a3,countryCode' \
