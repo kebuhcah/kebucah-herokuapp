@@ -19,7 +19,7 @@ function isHiddenCountry(d) {
 }
 
 var projection = d3.geo.azimuthalEqualArea()
-  .center([20, 48.5])
+  .center([20, 46])
   .scale(width * scaleFactor)
   .translate([width * widthCenterRatio, height * heightCenterRatio]);
 
@@ -53,84 +53,98 @@ function pathDotCentroid(d) {
 d3.json("europe.json", function(error, europe) {
   if (error) return console.error(error);
 
+  d3.json('parlgov.json', function(error, json) {
+    if (error) return console.error(error);
 
+    parlgov = json; // parlgov is GLOBAL
 
-  var countries = topojson.feature(europe, europe.objects.countries);
+    console.log(parlgov);
 
-  console.log(countries);
+    var countries = topojson.feature(europe, europe.objects.countries);
 
-  svg.selectAll(".country")
-      .data(countries.features)
-    .enter().append("path")
-      .attr("class", function(d) { return "country " + (d.id === 'CYN' ? 'CYP' : d.id); })
-      .attr("d", path)
-      .classed("upcoming", function(d) { return upcomingCountries.indexOf(d.id) >= 0; })
-      .classed("ghost", function(d) { return isHiddenCountry(d); })
-      .style("pointer-events", "all")
-      .on("mouseover", mouseover)
-      .on("mouseout", mouseout)
-      //.on("touchend", touchend)
-      .on("mousedown", mousedown)
-      .on("mouseup", mouseup)
-      .on("click", click);
+    console.log(countries);
 
-  svg.append("path")
-    .datum(topojson.mesh(europe, europe.objects.countries, function(a, b) {
-      return !(a.id === 'CYP' && b.id === 'CYN' || a.id === 'CYN' && b.id === 'CYP');
-    }))
-    .attr("d", path)
-    .attr("class", "border");
+    svg.selectAll(".country")
+        .data(countries.features)
+      .enter().append("path")
+        .attr("class", function(d) { return "country " + (d.id === 'CYN' ? 'CYP' : d.id); })
+        .attr("d", path)
+        //.classed("upcoming", function(d) { return upcomingCountries.indexOf(d.id) >= 0; })
+        .classed("ghost", function(d) { return isHiddenCountry(d); })
+        .style("pointer-events", "all")
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout)
+        //.on("touchend", touchend)
+        .on("mousedown", mousedown)
+        .on("mouseup", mouseup)
+        .on("click", click);
 
-  svg.selectAll(".country-label")
-      .data(countries.features.filter(function(d) {
-        return !isHiddenCountry(d) && d.id !== 'CYN';
+    coloringOnClick("#upcoming-color", function (d) { return upcomingCountries.indexOf(d.id) >= 0 ? '#0F7173' : '#DB8'; })
+    coloringOnClick("#eu-color", function (d) { return parlgov[d.id] ? parlgov[d.id].eu_accession_date ? 'yellow' : '#DB8' : '#DB8'; })
+
+    d3.selectAll(".active").classed("active", false);
+
+    svg.append("path")
+      .datum(topojson.mesh(europe, europe.objects.countries, function(a, b) {
+        return !(a.id === 'CYP' && b.id === 'CYN' || a.id === 'CYN' && b.id === 'CYP');
       }))
-  .enter().append("text")
-    .attr("class", function(d) { return "country-label " + d.id; })
-    .attr("transform", function(d) { return "translate(" + pathDotCentroid(d) + ")"; })
-    .attr("dy", ".35em")
-    .attr("font-size", 12)
-    .text(function(d) { return ['MKD','MNE','KOS','BIH','LUX','SVN','HRV','AND','MCO','SMR','LIE'].indexOf(d.id) >= 0
-         ? d.id : d.properties.name; })
-    .attr("x", function(d) {
-      return 0;
-    })
-    .style("text-anchor", function(d) {
-      return "middle";
-    })
-    .style("pointer-events", "none");
+      .attr("d", path)
+      .attr("class", "border");
 
-    d3.select(window).on('resize', resize);
+    svg.selectAll(".country-label")
+        .data(countries.features.filter(function(d) {
+          return !isHiddenCountry(d) && d.id !== 'CYN';
+        }))
+    .enter().append("text")
+      .attr("class", function(d) { return "country-label " + d.id; })
+      .attr("transform", function(d) { return "translate(" + pathDotCentroid(d) + ")"; })
+      .attr("dy", ".35em")
+      .attr("font-size", 12)
+      .text(function(d) { return ['MKD','MNE','KOS','BIH','LUX','SVN','HRV','AND','MCO','SMR','LIE'].indexOf(d.id) >= 0
+           ? d.id : d.properties.name; })
+      .attr("x", function(d) {
+        return 0;
+      })
+      .style("text-anchor", function(d) {
+        return "middle";
+      })
+      .style("pointer-events", "none");
 
-    function resize() {
-        // adjust things when the window size changes
-        width = window.innerWidth;
-        width = width - margin.left - margin.right;
-        height = Math.min(window.innerHeight, width * mapRatio);
+      d3.select(window).on('resize', resize);
 
-        // update projection
-        projection
-            .translate([width * widthCenterRatio, height * heightCenterRatio])
-            .scale(width * scaleFactor);
+      function resize() {
+          // adjust things when the window size changes
+          width = window.innerWidth;
+          width = width - margin.left - margin.right;
+          height = Math.min(window.innerHeight, width * mapRatio);
 
-        // resize the map container
-        svg.attr('width', width).attr('height', height);
+          // update projection
+          projection
+              .translate([width * widthCenterRatio, height * heightCenterRatio])
+              .scale(width * scaleFactor);
 
-        // resize the map
-        svg.selectAll('.country').attr('d', path);
-        svg.selectAll('.border').attr('d', path);
-        svg.selectAll(".country-label")
-          .attr("transform", function(d) { return "translate(" + pathDotCentroid(d) + ")"; });
-    }
+          // resize the map container
+          svg.attr('width', width).attr('height', height);
 
-    d3.json('parlgov.json', function(error, json) {
-      if (error) return console.error(error);
+          // resize the map
+          svg.selectAll('.country').attr('d', path);
+          svg.selectAll('.border').attr('d', path);
+          svg.selectAll(".country-label")
+            .attr("transform", function(d) { return "translate(" + pathDotCentroid(d) + ")"; });
+      }
 
-      parlgov = json;
-
-      console.log(parlgov);
-    })
+  });
 });
+
+function coloringOnClick(id, func) {
+  d3.select(id).on("click", function() {
+    svg.selectAll(".country")
+      .filter(function(d){ return !isHiddenCountry(d); })
+      .transition().style("fill", func);
+    d3.selectAll(".active").classed("active", false);
+    d3.select(id).classed("active", true);
+  });
+}
 
 function mouseover(d,i) {
   d3.selectAll("."+(d.id === 'CYN' ? 'CYP' : d.id)).classed("highlighted",true);
