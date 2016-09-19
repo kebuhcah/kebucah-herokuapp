@@ -147,6 +147,7 @@ function coloringOnClick(id, func) {
 }
 
 function mouseover(d,i) {
+  if (isHiddenCountry(d)) return;
   d3.selectAll("."+(d.id === 'CYN' ? 'CYP' : d.id)).classed("highlighted",true);
   d3.selectAll(".legend text").classed("highlighted",true);
 }

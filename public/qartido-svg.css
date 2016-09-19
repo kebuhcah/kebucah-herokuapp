@@ -7,7 +7,8 @@
 }
 
 .country.highlighted {
-  fill: #F05D5E;
+  stroke: #F05D5E;
+  stroke-width: 5;
 }
 
 .country.ghost {
