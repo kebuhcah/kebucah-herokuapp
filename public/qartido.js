@@ -179,16 +179,17 @@ function click0(d,i) {
 
   console.log(properties);
 
-  d3.select("#country-election-date td").text(parlgov[d.id] ? parlgov[d.id].election_date.substring(0,10) : 'unknown');
-  d3.select("#country-ruling-party td").html(parlgov[d.id] ? (parlgov[d.id].parties[0].party_name_english
-    + ' <br> (' + parlgov[d.id].parties[0].party_name + ')') : 'unknown');
-  d3.select("#country-ruling-party-family td").text(parlgov[d.id] ? parlgov[d.id].parties[0].family_name : 'unknown');
-  d3.select("#country-ruling-party-seats td").text(parlgov[d.id] ? (parlgov[d.id].parties[0].seats
-    + ' / ' + parlgov[d.id].seats_total + ' (' + d3.round(parlgov[d.id].parties[0].seats/parlgov[d.id].seats_total*100,1) + '%)') : 'unknown');
-  d3.select("#country-ruling-party-votes td").text(parlgov[d.id] ? parlgov[d.id].parties[0].vote_share + '%' : 'unknown');
-  d3.select("#country-population td").text(d3.format(',d')(properties.population));
-  d3.select("#country-gdp td").text(d3.format('$,d')(properties.gdpMillionUsd * 1000000));
-  d3.select("#country-corruption td").text(properties.corruptionIndex);
+  d3.select("#country-election-date td").text(parlgov[d.id] ? parlgov[d.id].election_date ? parlgov[d.id].election_date.substring(0,10) : 'unknown' : 'unknown');
+  d3.select("#country-ruling-party td").html(parlgov[d.id] ? (parlgov[d.id].parties ? parlgov[d.id].parties[0].party_name_english
+    + ' <br> (' + parlgov[d.id].parties[0].party_name + ')'  : 'unknown') : 'unknown');
+  d3.select("#country-ruling-party-family td").text(parlgov[d.id] ? parlgov[d.id].parties ? parlgov[d.id].parties[0].family_name : 'unknown' : 'unknown');
+  d3.select("#country-ruling-party-seats td").text(parlgov[d.id] ? (parlgov[d.id].parties ? parlgov[d.id].parties[0].seats
+    + ' / ' + parlgov[d.id].seats_total + ' (' + d3.round(parlgov[d.id].parties[0].seats/parlgov[d.id].seats_total*100,1) + '%)' : 'unknown') : 'unknown');
+  d3.select("#country-ruling-party-votes td").text(parlgov[d.id] ? parlgov[d.id].parties ? parlgov[d.id].parties[0].vote_share + '%' : 'unknown' : 'unknown');
+  d3.select("#country-population td").text(d3.format(',d')(parlgov[d.id] ? parlgov[d.id].totalPopulation : NaN));
+  console.log(parlgov[d.id].gdpUsd);
+  d3.select("#country-gdp td").text(d3.format('$,f')(parlgov[d.id] ? parlgov[d.id].gdpUsd : NaN));
+  d3.select("#country-corruption td").text(parlgov[d.id] ? parlgov[d.id].cpi2015 : NaN);
   d3.select("#country-system td").text(properties.systemOfGovernment);
 
   console.log("Clicked " + d.id)
