@@ -19,7 +19,7 @@ function isHiddenCountry(d) {
 }
 
 var projection = d3.geo.azimuthalEqualArea()
-  .center([20, 46])
+  .center([20, 48.5])
   .scale(width * scaleFactor)
   .translate([width * widthCenterRatio, height * heightCenterRatio]);
 
