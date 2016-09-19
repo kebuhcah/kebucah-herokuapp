@@ -80,7 +80,7 @@ d3.json("europe.json", function(error, europe) {
         .on("click", click);
 
     coloringOnClick("#upcoming-color", function (d) { return upcomingCountries.indexOf(d.id) >= 0 ? '#0F7173' : '#DB8'; })
-    coloringOnClick("#eu-color", function (d) { return parlgov[d.id] ? parlgov[d.id].eu_accession_date ? 'yellow' : '#DB8' : '#DB8'; })
+    coloringOnClick("#eu-color", function (d) { return parlgov[d.id] ? parlgov[d.id].eu_accession_date ? 'gold' : '#DB8' : '#DB8'; })
 
     d3.selectAll(".active").classed("active", false);
 
