@@ -178,7 +178,7 @@ function click0(d,i) {
   $('#myModal').modal('show');
   $('#myModalLabel').text(properties.name);
 
-  console.log(properties);
+  console.log("Clicked " + d.id)
 
   d3.select("#country-election-date td").text(parlgov[d.id] ? parlgov[d.id].election_date ? parlgov[d.id].election_date.substring(0,10) : 'unknown' : 'unknown');
   d3.select("#country-ruling-party td").html(parlgov[d.id] ? (parlgov[d.id].parties ? parlgov[d.id].parties[0].party_name_english
@@ -193,5 +193,4 @@ function click0(d,i) {
   d3.select("#country-corruption td").text(parlgov[d.id] ? parlgov[d.id].cpi2015 : NaN);
   d3.select("#country-system td").text(properties.systemOfGovernment);
 
-  console.log("Clicked " + d.id)
 }
