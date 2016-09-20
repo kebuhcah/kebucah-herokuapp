@@ -57,6 +57,8 @@ var emojiMap = {
   "#ruling-liberty-authority-color" : "⚖",
   "#ruling-pro-anti-eu-color" : "🇪🇺",
   "#unemployment-color" : "🏚",
+  "#rulingParty-color" : "👑",
+  "#upcoming-color" : "⏰",
 }
 
 function pathDotCentroid(d) {
@@ -152,6 +154,14 @@ d3.json("europe.json", function(error, europe) {
       .attr("d", path)
       .attr("class", "border");
 
+    svg.append("path")
+      .datum(topojson.merge(europe,europe.objects.countries.geometries.filter(function(d) {
+        return d.properties.eu_accession_date || d.id == 'CYN' ? true : false; })))
+      .attr("d", path)
+      .attr("class", "eu-border")
+      .style("display","none");
+
+
     svg.selectAll(".country-label")
         .data(countries.features.filter(function(d) {
           return !isHiddenCountry(d) && ['CYN','LUX','MNE','KOS'].indexOf(d.id) < 0;
@@ -175,7 +185,6 @@ d3.json("europe.json", function(error, europe) {
 
       fillOnClick("#reset-color", function (d) { return '#DB8'; })
       fillOnClick("#upcoming-color", function (d) { return upcomingCountries.indexOf(d.id) >= 0 ? '#0F7173' : '#DB8'; })
-      fillOnClick("#eu-color", function (d) { return parlgov[d.id] ? d.id === 'GBR' ? '#F05D5E' : parlgov[d.id].eu_accession_date ? 'gold' : '' : ''; })
       fillOnClick("#party-data-color", function (d) { return parlgov[d.id] ? parlgov[d.id].parties ? 'green' : '#DB8' : '#DB8'; })
       fillOnClick("#cpi-color", function (d) { return parlgov[d.id] ? parlgov[d.id].cpi2015 ? d3.scale.linear()
         .domain([30, 60, 90])
@@ -209,8 +218,19 @@ d3.json("europe.json", function(error, europe) {
       fillOnClick("#ruling-pro-anti-eu-color", function (d) { return getRulingParty(d).eu_anti_pro ? d3.scale.linear()
           .domain([0, 5, 10])
           .range(["red", "white", "royalblue"])(getRulingParty(d).eu_anti_pro) : '#DB8'; })
-      //d3.selectAll(".active").classed("active", false);
+
+      d3.select("#eu-color").on("click", function() {
+        if (d3.select("#eu-color").classed("active")) {
+          d3.select(".eu-border").style("display","none");
+          d3.select("#eu-color").classed("active",false);
+        } else {
+          d3.select(".eu-border").style("display","");
+          d3.select("#eu-color").classed("active",true);
+        }
+      })
+
       d3.select("#rulingParty-color").on("click")();
+      d3.select("#eu-color").on("click")();
 
       d3.select(window).on('resize', resize);
 
@@ -276,7 +296,7 @@ function coloringOnClick(id, func, attr) {
     d3.selectAll(".active").classed("active", false);
     //d3.select(emojiMap[id] ? "#fill-dropdown" : id).classed("active", true);
     d3.select(id).classed("active", true);
-    d3.select("#fill-status").text(emojiMap[id]);
+    d3.select("#fill-status").text(d3.select(id).text());
     //d3.select("#fill-caret").style("display", emojiMap[id] ? "none" : "")
   });
 }

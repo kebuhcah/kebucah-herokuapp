@@ -2,12 +2,12 @@
   /*fill: #999999*/
   fill: #DB8;
   stroke: none;
-  stroke-width: 10;
+  stroke-width: 12;
 }
 
 .country.highlighted {
   stroke: yellow;
-  stroke-width: 8;
+  stroke-width: 10;
 }
 
 .country.ghost {
@@ -27,6 +27,14 @@
 
 .border.highlighted {
   stroke: #f00;
+}
+
+.eu-border {
+  stroke: yellow;
+  stroke-width: 8;
+  fill: none;
+  stroke-linejoin: round;
+  stroke-opacity: .8;
 }
 
 .country-label {
