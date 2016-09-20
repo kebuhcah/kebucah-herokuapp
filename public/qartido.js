@@ -56,6 +56,7 @@ var emojiMap = {
   "#ruling-state-market-color" : "🏛",
   "#ruling-liberty-authority-color" : "⚖",
   "#ruling-pro-anti-eu-color" : "🇪🇺",
+  "#unemployment-color" : "🏚",
 }
 
 function pathDotCentroid(d) {
@@ -92,6 +93,7 @@ d3.json("europe.json", function(error, europe) {
     countries.features.forEach(function(d) {
       if(json[d.id]) {
         for (var attrname in json[d.id]) {
+          if (d.properties[attrname]) continue; // don't clobber
           d.properties[attrname] = json[d.id][attrname];
         }
       }
@@ -100,14 +102,6 @@ d3.json("europe.json", function(error, europe) {
     var cyprusDatum = countries.features[countries.features.findIndex(function(d) { return d.id === 'CYP'; })];
     cyprusDatum.geometry = topojson.merge(europe,europe.objects.countries.geometries.filter(function(d) {
       return d.id === 'CYP' || d.id == 'CYN'; }));
-
-    /*{
-      type: "Feature",
-      id: "CYP",
-      properties: { continent: "Europe", name: "Cyprus" },
-      geometry: topojson.merge(europe,europe.objects.countries.geometries.filter(function(d) {
-        return d.id === 'CYP' || d.id == 'CYN'; }))
-    };*/
 
     console.log(countries);
 
@@ -198,6 +192,10 @@ d3.json("europe.json", function(error, europe) {
       fillOnClick("#gdpPerCapita-color", function (d) { return parlgov[d.id] ? parlgov[d.id].gdpPerCapitaUsd ? d3.scale.linear()
           .domain([0, 101449])
           .range(["white", "purple"])(parlgov[d.id].gdpPerCapitaUsd) : '#DB8' : '#DB8'; })
+      fillOnClick("#unemployment-color", function (d) { return parlgov[d.id] ? parlgov[d.id].gdpPerCapitaUsd ? d3.scale.linear()
+          .domain([0, 25])
+          .range(["white", "red"])(parlgov[d.id].unemploymentIlo) : '#DB8' : '#DB8'; })
+
       fillOnClick("#rulingParty-color", function(d){ return familyMap[getRulingParty(d).family_name]; })
       fillOnClick("#ruling-left-right-color", function (d) { return getRulingParty(d).left_right ? d3.scale.linear()
           .domain([0, 5, 10])
