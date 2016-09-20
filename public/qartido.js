@@ -273,7 +273,7 @@ function getRulingParty(d) {
   }
 
   for(i=0; i < d.properties.parties.length; i++) {
-    if (d.properties.parties[i].cabinet_party) {
+    if (d.properties.parties[i].prime_minister || d.properties.parties[i].cabinet_party || d.id === 'ROU') {
       return d.properties.parties[i];
     }
   }
@@ -338,7 +338,7 @@ function click0(d,i) {
 
   d3.select("#country-election-date td").text(d.properties.election_date ? parlgov[d.id].election_date.substring(0,10) : '');
   rulingPartyText = getRulingParty(d).party_name_english;
-  if (getRulingParty(d).party_name && d.id !== 'GBR' && d.id !== 'IRL' && d.id !== 'ROU')
+  if (getRulingParty(d).party_name && d.id !== 'GBR' && d.id !== 'IRL')
     rulingPartyText = rulingPartyText + ' <br> (' + getRulingParty(d).party_name + ')'
   d3.select("#country-ruling-party td").html(rulingPartyText);
   d3.select("#country-ruling-party-family td").text(getRulingParty(d).family_name);
