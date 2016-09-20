@@ -194,6 +194,13 @@ function coloringOnClick(id, func) {
       .transition().style("fill", func);
     d3.selectAll(".active").classed("active", false);
     d3.select(id).classed("active", true);
+    d3.select("#fill-status").text({
+      "#population-color" : "👥",
+      "#gdp-color" : "💰",
+      "#gdpPerCapita-color" : "💶",
+      "#cpi-color" : "🕵"
+    }[id]);
+
   });
 }
 
