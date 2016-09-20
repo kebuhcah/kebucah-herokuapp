@@ -85,11 +85,13 @@ d3.json("europe.json", function(error, europe) {
 
     console.log(countries);
 
-    cyprusDatum = {type: "Feature",
-        id: "CYP",
-        properties: {continent: "Europe"},
-        geometry: topojson.merge(europe,europe.objects.countries.geometries.filter(function(d) {
-          return d.id === 'CYP' || d.id == 'CYN'; }))};
+    cyprusDatum = {
+      type: "Feature",
+      id: "CYP",
+      properties: { continent: "Europe", name: "Cyprus" },
+      geometry: topojson.merge(europe,europe.objects.countries.geometries.filter(function(d) {
+        return d.id === 'CYP' || d.id == 'CYN'; }))
+    };
 
     svg.append("defs").selectAll("clipPath")
         .data(countries.features.filter(function(d) { return d.id !== 'CYP' && d.id !== 'CYN'; }))
