@@ -106,6 +106,9 @@ d3.json("europe.json", function(error, europe) {
     coloringOnClick("#population-color", function (d) { return parlgov[d.id] ? parlgov[d.id].totalPopulation ? d3.scale.sqrt()
         .domain([0, 145000000])
         .range(["white", "orange"])(parlgov[d.id].totalPopulation) : '#DB8' : '#DB8'; })
+    coloringOnClick("#density-color", function (d) { return parlgov[d.id] ? parlgov[d.id].populationDensity ? d3.scale.sqrt()
+        .domain([5, 400])
+        .range(["white", "blue"])(parlgov[d.id].populationDensity) : '#DB8' : '#DB8'; })
     coloringOnClick("#gdp-color", function (d) { return parlgov[d.id] ? parlgov[d.id].gdpUsd ? d3.scale.sqrt()
         .domain([0, 3355772429854])
         .range(["white", "green"])(parlgov[d.id].gdpUsd) : '#DB8' : '#DB8'; })
@@ -196,6 +199,7 @@ function coloringOnClick(id, func) {
     d3.select(id).classed("active", true);
     d3.select("#fill-status").text({
       "#population-color" : "👥",
+      "#density-color" : "🏙",
       "#gdp-color" : "💰",
       "#gdpPerCapita-color" : "💶",
       "#cpi-color" : "🕵"
