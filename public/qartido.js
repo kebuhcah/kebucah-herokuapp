@@ -37,6 +37,14 @@ var voronoi = d3.geom.voronoi()
 
 var parlgov = {};
 
+var familyMap = {'Agrarian' : 'green',
+  'Christian democracy' : 'aqua',
+  'Communist/Socialist' : 'red',
+  'Conservative' : 'royalblue',
+  'Liberal' : 'gold',
+  'Social democracy' : 'pink',
+  'no family' : 'gray'};
+
 function pathDotCentroid(d) {
   unit = window.innerWidth/120
   if (d.id === 'FRA') {
@@ -104,7 +112,10 @@ d3.json("europe.json", function(error, europe) {
     coloringOnClick("#gdpPerCapita-color", function (d) { return parlgov[d.id] ? parlgov[d.id].gdpPerCapitaUsd ? d3.scale.linear()
         .domain([0, 101449])
         .range(["white", "purple"])(parlgov[d.id].gdpPerCapitaUsd) : '#DB8' : '#DB8'; })
-    d3.selectAll(".active").classed("active", false);
+    coloringOnClick("#rulingParty-color", function(d){ return familyMap[getRulingParty(d).family_name]; })
+
+    //d3.selectAll(".active").classed("active", false);
+    d3.select("#rulingParty-color").on("click")();
 
     svg.append("path")
       .datum(topojson.mesh(europe, europe.objects.countries, function(a, b) {
@@ -159,6 +170,23 @@ d3.json("europe.json", function(error, europe) {
   });
 });
 
+function getRulingParty(d) {
+  nullResult = {family_name: '', party_name: '', party_name_english: ''}
+
+  if (!parlgov[d.id] || !parlgov[d.id].parties) {
+    return nullResult;
+  }
+
+  parties = parlgov[d.id].parties;
+  for(i=0; i < parties.length; i++) {
+    if (parties[i].cabinet_party) {
+      return parties[i];
+    }
+  }
+
+  return nullResult;
+ }
+
 function coloringOnClick(id, func) {
   d3.select(id).on("click", function() {
     svg.selectAll(".country")
@@ -204,12 +232,14 @@ function click0(d,i) {
   console.log("Clicked " + d.id)
 
   d3.select("#country-election-date td").text(parlgov[d.id] ? parlgov[d.id].election_date ? parlgov[d.id].election_date.substring(0,10) : 'unknown' : 'unknown');
-  d3.select("#country-ruling-party td").html(parlgov[d.id] ? (parlgov[d.id].parties ? parlgov[d.id].parties[0].party_name_english
-    + ' <br> (' + parlgov[d.id].parties[0].party_name + ')'  : 'unknown') : 'unknown');
-  d3.select("#country-ruling-party-family td").text(parlgov[d.id] ? parlgov[d.id].parties ? parlgov[d.id].parties[0].family_name : 'unknown' : 'unknown');
-  d3.select("#country-ruling-party-seats td").text(parlgov[d.id] ? (parlgov[d.id].parties ? parlgov[d.id].parties[0].seats
-    + ' / ' + parlgov[d.id].seats_total + ' (' + d3.round(parlgov[d.id].parties[0].seats/parlgov[d.id].seats_total*100,1) + '%)' : 'unknown') : 'unknown');
-  d3.select("#country-ruling-party-votes td").text(parlgov[d.id] ? parlgov[d.id].parties ? parlgov[d.id].parties[0].vote_share + '%' : 'unknown' : 'unknown');
+  rulingPartyText = getRulingParty(d).party_name_english;
+  if (getRulingParty(d).party_name && d.id !== 'GBR' && d.id !== 'IRL' && d.id !== 'ROU')
+    rulingPartyText = rulingPartyText + ' <br> (' + getRulingParty(d).party_name + ')'
+  d3.select("#country-ruling-party td").html(rulingPartyText);
+  d3.select("#country-ruling-party-family td").text(getRulingParty(d).family_name);
+  //d3.select("#country-ruling-party-seats td").text(parlgov[d.id] ? (parlgov[d.id].parties ? parlgov[d.id].parties[0].seats
+  //  + ' / ' + parlgov[d.id].seats_total + ' (' + d3.round(parlgov[d.id].parties[0].seats/parlgov[d.id].seats_total*100,1) + '%)' : 'unknown') : 'unknown');
+  //d3.select("#country-ruling-party-votes td").text(parlgov[d.id] ? parlgov[d.id].parties ? parlgov[d.id].parties[0].vote_share + '%' : 'unknown' : 'unknown');
   d3.select("#country-population td").text(d3.format(',d')(parlgov[d.id] ? parlgov[d.id].totalPopulation : NaN));
   d3.select("#country-gdp td").text(d3.format('$,f')(parlgov[d.id] ? parlgov[d.id].gdpUsd : NaN));
   d3.select("#country-corruption td").text(parlgov[d.id] ? parlgov[d.id].cpi2015 : NaN);
