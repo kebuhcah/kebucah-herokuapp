@@ -91,6 +91,9 @@ d3.json("europe.json", function(error, europe) {
     coloringOnClick("#upcoming-color", function (d) { return upcomingCountries.indexOf(d.id) >= 0 ? '#0F7173' : '#DB8'; })
     coloringOnClick("#eu-color", function (d) { return parlgov[d.id] ? d.id === 'GBR' ? '#F05D5E' : parlgov[d.id].eu_accession_date ? 'gold' : '#DB8' : '#DB8'; })
     coloringOnClick("#party-data-color", function (d) { return parlgov[d.id] ? parlgov[d.id].parties ? 'green' : '#DB8' : '#DB8'; })
+    coloringOnClick("#cpi-color", function (d) { return parlgov[d.id] ? parlgov[d.id].cpi2015 ? d3.scale.linear()
+      .domain([30, 60, 90])
+      .range(["red", "white", "blue"])(parlgov[d.id].cpi2015) : '#DB8' : '#DB8'; })
 
     d3.selectAll(".active").classed("active", false);
 
