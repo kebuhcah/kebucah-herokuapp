@@ -45,6 +45,14 @@ var familyMap = {'Agrarian' : 'green',
   'Social democracy' : 'pink',
   'no family' : 'gray'};
 
+var emojiMap = {
+  "#population-color" : "👥",
+  "#density-color" : "🏙",
+  "#gdp-color" : "💰",
+  "#gdpPerCapita-color" : "💶",
+  "#cpi-color" : "🕵"
+}
+
 function pathDotCentroid(d) {
   unit = window.innerWidth/120
   if (d.id === 'FRA') {
@@ -196,15 +204,10 @@ function coloringOnClick(id, func) {
       .filter(function(d){ return !isHiddenCountry(d); })
       .transition().style("fill", func);
     d3.selectAll(".active").classed("active", false);
+    //d3.select(emojiMap[id] ? "#fill-dropdown" : id).classed("active", true);
     d3.select(id).classed("active", true);
-    d3.select("#fill-status").text({
-      "#population-color" : "👥",
-      "#density-color" : "🏙",
-      "#gdp-color" : "💰",
-      "#gdpPerCapita-color" : "💶",
-      "#cpi-color" : "🕵"
-    }[id]);
-
+    d3.select("#fill-status").text(emojiMap[id]);
+    //d3.select("#fill-caret").style("display", emojiMap[id] ? "none" : "")
   });
 }
 
