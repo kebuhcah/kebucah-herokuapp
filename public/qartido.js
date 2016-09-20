@@ -44,7 +44,8 @@ var familyMap = {'Agrarian' : 'green',
   'Conservative' : 'royalblue',
   'Liberal' : 'orange',
   'Social democracy' : 'pink',
-  'no family' : 'gray'};
+  'no family' : 'gray',
+  '' : 'gray'};
 
 var emojiMap = {
   "#population-color" : "👥",
@@ -159,8 +160,8 @@ d3.json("europe.json", function(error, europe) {
         return d.properties.eu_accession_date || d.id == 'CYN' ? true : false; })))
       .attr("d", path)
       .attr("class", "eu-border")
-      .style("display","none");
-
+      .style("display","none")
+      .style("pointer-events", "none");
 
     svg.selectAll(".country-label")
         .data(countries.features.filter(function(d) {
@@ -185,39 +186,39 @@ d3.json("europe.json", function(error, europe) {
 
       fillOnClick("#reset-color", function (d) { return '#DB8'; })
       fillOnClick("#upcoming-color", function (d) { return upcomingCountries.indexOf(d.id) >= 0 ? '#0F7173' : '#DB8'; })
-      fillOnClick("#party-data-color", function (d) { return parlgov[d.id] ? parlgov[d.id].parties ? 'green' : '#DB8' : '#DB8'; })
-      fillOnClick("#cpi-color", function (d) { return parlgov[d.id] ? parlgov[d.id].cpi2015 ? d3.scale.linear()
+      fillOnClick("#party-data-color", function (d) { return d.properties.parties ? 'green' : '#DB8'; })
+      fillOnClick("#cpi-color", function (d) { return d.properties.cpi2015 ? d3.scale.linear()
         .domain([30, 60, 90])
-        .range(["red", "white", "blue"])(parlgov[d.id].cpi2015) : '#DB8' : '#DB8'; })
-      fillOnClick("#population-color", function (d) { return parlgov[d.id] ? parlgov[d.id].totalPopulation ? d3.scale.sqrt()
+        .range(["red", "white", "blue"])(d.properties.cpi2015) : 'gray'; })
+      fillOnClick("#population-color", function (d) { return d.properties.totalPopulation ? d3.scale.sqrt()
           .domain([0, 145000000])
-          .range(["white", "orange"])(parlgov[d.id].totalPopulation) : '#DB8' : '#DB8'; })
-      fillOnClick("#density-color", function (d) { return parlgov[d.id] ? parlgov[d.id].populationDensity ? d3.scale.sqrt()
+          .range(["white", "orange"])(d.properties.totalPopulation) : 'gray'; })
+      fillOnClick("#density-color", function (d) { return d.properties.populationDensity ? d3.scale.sqrt()
           .domain([5, 400])
-          .range(["white", "blue"])(parlgov[d.id].populationDensity) : '#DB8' : '#DB8'; })
-      fillOnClick("#gdp-color", function (d) { return parlgov[d.id] ? parlgov[d.id].gdpUsd ? d3.scale.sqrt()
+          .range(["white", "blue"])(parlgov[d.id].populationDensity) : 'gray'; })
+      fillOnClick("#gdp-color", function (d) { return d.properties.gdpUsd ? d3.scale.sqrt()
           .domain([0, 3355772429854])
-          .range(["white", "green"])(parlgov[d.id].gdpUsd) : '#DB8' : '#DB8'; })
-      fillOnClick("#gdpPerCapita-color", function (d) { return parlgov[d.id] ? parlgov[d.id].gdpPerCapitaUsd ? d3.scale.linear()
+          .range(["white", "green"])(d.properties.gdpUsd) : 'gray'; })
+      fillOnClick("#gdpPerCapita-color", function (d) { return d.properties.gdpPerCapitaUsd ? d3.scale.linear()
           .domain([0, 101449])
-          .range(["white", "purple"])(parlgov[d.id].gdpPerCapitaUsd) : '#DB8' : '#DB8'; })
-      fillOnClick("#unemployment-color", function (d) { return parlgov[d.id] ? parlgov[d.id].gdpPerCapitaUsd ? d3.scale.linear()
+          .range(["white", "purple"])(d.properties.gdpPerCapitaUsd) : 'gray'; })
+      fillOnClick("#unemployment-color", function (d) { return d.properties.unemploymentIlo ? d3.scale.linear()
           .domain([0, 25])
-          .range(["white", "red"])(parlgov[d.id].unemploymentIlo) : '#DB8' : '#DB8'; })
+          .range(["white", "red"])(d.properties.unemploymentIlo) : 'gray'; })
 
       fillOnClick("#rulingParty-color", function(d){ return familyMap[getRulingParty(d).family_name]; })
       fillOnClick("#ruling-left-right-color", function (d) { return getRulingParty(d).left_right ? d3.scale.linear()
           .domain([0, 5, 10])
-          .range(["red", "white", "royalblue"])(getRulingParty(d).left_right) : '#DB8'; })
+          .range(["red", "white", "royalblue"])(getRulingParty(d).left_right) : 'gray'; })
       fillOnClick("#ruling-state-market-color", function (d) { return getRulingParty(d).state_market ? d3.scale.linear()
           .domain([0, 5, 10])
-          .range(["red", "white", "green"])(getRulingParty(d).state_market) : '#DB8'; })
+          .range(["red", "white", "green"])(getRulingParty(d).state_market) : 'gray'; })
       fillOnClick("#ruling-liberty-authority-color", function (d) { return getRulingParty(d).liberty_authority ? d3.scale.linear()
           .domain([0, 5, 10])
-          .range(["green", "white", "purple"])(getRulingParty(d).liberty_authority) : '#DB8'; })
+          .range(["green", "white", "purple"])(getRulingParty(d).liberty_authority) : 'gray'; })
       fillOnClick("#ruling-pro-anti-eu-color", function (d) { return getRulingParty(d).eu_anti_pro ? d3.scale.linear()
           .domain([0, 5, 10])
-          .range(["red", "white", "royalblue"])(getRulingParty(d).eu_anti_pro) : '#DB8'; })
+          .range(["red", "white", "royalblue"])(getRulingParty(d).eu_anti_pro) : 'gray'; })
 
       d3.select("#eu-color").on("click", function() {
         if (d3.select("#eu-color").classed("active")) {
@@ -255,6 +256,7 @@ d3.json("europe.json", function(error, europe) {
           svg.selectAll('.country-clip').attr('d', path);
           svg.selectAll('.country').attr('d', path);
           svg.selectAll('.border').attr('d', path);
+          svg.selectAll('.eu-border').attr('d', path);
           svg.selectAll(".country-label")
             .attr("transform", function(d) { return "translate(" + pathDotCentroid(d) + ")"; });
       }
@@ -266,14 +268,13 @@ function getRulingParty(d) {
   nullResult = {family_name: '', party_name: '', party_name_english: '',
     eu_anti_pro: NaN, left_right: NaN, liberty_authority: NaN, state_market: NaN}
 
-  if (!parlgov[d.id] || !parlgov[d.id].parties) {
+  if (!d.properties.parties) {
     return nullResult;
   }
 
-  parties = parlgov[d.id].parties;
-  for(i=0; i < parties.length; i++) {
-    if (parties[i].cabinet_party) {
-      return parties[i];
+  for(i=0; i < d.properties.parties.length; i++) {
+    if (d.properties.parties[i].cabinet_party) {
+      return d.properties.parties[i];
     }
   }
 
@@ -333,9 +334,9 @@ function click0(d,i) {
   $('#myModal').modal('show');
   $('#myModalLabel').text(properties.name);
 
-  console.log("Clicked " + d.id)
+  //console.log("Clicked " + d.id)
 
-  d3.select("#country-election-date td").text(parlgov[d.id] ? parlgov[d.id].election_date ? parlgov[d.id].election_date.substring(0,10) : 'unknown' : 'unknown');
+  d3.select("#country-election-date td").text(d.properties.election_date ? parlgov[d.id].election_date.substring(0,10) : '');
   rulingPartyText = getRulingParty(d).party_name_english;
   if (getRulingParty(d).party_name && d.id !== 'GBR' && d.id !== 'IRL' && d.id !== 'ROU')
     rulingPartyText = rulingPartyText + ' <br> (' + getRulingParty(d).party_name + ')'
@@ -344,9 +345,10 @@ function click0(d,i) {
   //d3.select("#country-ruling-party-seats td").text(parlgov[d.id] ? (parlgov[d.id].parties ? parlgov[d.id].parties[0].seats
   //  + ' / ' + parlgov[d.id].seats_total + ' (' + d3.round(parlgov[d.id].parties[0].seats/parlgov[d.id].seats_total*100,1) + '%)' : 'unknown') : 'unknown');
   //d3.select("#country-ruling-party-votes td").text(parlgov[d.id] ? parlgov[d.id].parties ? parlgov[d.id].parties[0].vote_share + '%' : 'unknown' : 'unknown');
-  d3.select("#country-population td").text(d3.format(',d')(parlgov[d.id] ? parlgov[d.id].totalPopulation : NaN));
-  d3.select("#country-gdp td").text(d3.format('$,f')(parlgov[d.id] ? parlgov[d.id].gdpUsd : NaN));
-  d3.select("#country-corruption td").text(parlgov[d.id] ? parlgov[d.id].cpi2015 : NaN);
-  d3.select("#country-system td").text(parlgov[d.id] ? parlgov[d.id].governmentType : 'unknown');
+  d3.select("#country-population td").text(d3.format(',d')(Math.round(d.properties.totalPopulation / 100000)*100000));
+  d3.select("#country-gdp td").text(d3.format('$,d')(Math.round(d.properties.gdpUsd / 1000000000)*1000000000));
+  d3.select("#country-corruption td").text(d.properties.cpi2015);
+  d3.select("#country-unemployment td").text(d3.format('.1f')(d.properties.unemploymentIlo) + '%');
+  d3.select("#country-system td").text(d.properties.governmentType);
 
 }
