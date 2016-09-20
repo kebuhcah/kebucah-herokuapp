@@ -64,11 +64,20 @@ d3.json("europe.json", function(error, europe) {
 
     console.log(countries);
 
+    svg.append("defs").selectAll("clipPath")
+        .data(countries.features)
+      .enter().append("clipPath")
+        .attr("id",function(d) { return "clip-path-" + d.id})
+      .append("path")
+        .attr("class", function(d) { return "country-clip " + (d.id === 'CYN' ? 'CYP' : d.id); })
+        .attr("d", path);
+
     svg.selectAll(".country")
         .data(countries.features)
       .enter().append("path")
         .attr("class", function(d) { return "country " + (d.id === 'CYN' ? 'CYP' : d.id); })
         .attr("d", path)
+        .attr("clip-path", function(d) { return "url(#clip-path-" + d.id + ")"; })
         //.classed("upcoming", function(d) { return upcomingCountries.indexOf(d.id) >= 0; })
         .classed("ghost", function(d) { return isHiddenCountry(d); })
         .style("pointer-events", "all")
@@ -94,7 +103,7 @@ d3.json("europe.json", function(error, europe) {
 
     svg.selectAll(".country-label")
         .data(countries.features.filter(function(d) {
-          return !isHiddenCountry(d) && d.id !== 'CYN';
+          return !isHiddenCountry(d) && ['CYN','LUX','MNE','KOS'].indexOf(d.id) < 0;
         }))
     .enter().append("text")
       .attr("class", function(d) { return "country-label " + d.id; })
@@ -128,6 +137,7 @@ d3.json("europe.json", function(error, europe) {
           svg.attr('width', width).attr('height', height);
 
           // resize the map
+          svg.selectAll('.country-clip').attr('d', path);
           svg.selectAll('.country').attr('d', path);
           svg.selectAll('.border').attr('d', path);
           svg.selectAll(".country-label")
