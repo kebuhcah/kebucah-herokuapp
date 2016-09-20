@@ -1,10 +1,8 @@
 .country {
   /*fill: #999999*/
-  fill: #DB8
-}
-
-.country.upcoming {
-  fill: #0F7173;
+  fill: #DB8;
+  stroke: none;
+  stroke-width: 10;
 }
 
 .country.highlighted {
