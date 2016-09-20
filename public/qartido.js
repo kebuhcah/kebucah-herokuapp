@@ -74,8 +74,12 @@ function pathDotCentroid(d) {
 d3.json("europe.json", function(error, europe) {
   if (error) return console.error(error);
 
+  d3.select(".progress-bar").style("width","25%");
+
   d3.json('parlgov.json', function(error, json) {
     if (error) return console.error(error);
+
+    d3.select(".progress-bar").style("width","50%");
 
     parlgov = json; // parlgov is GLOBAL
 
@@ -159,6 +163,8 @@ d3.json("europe.json", function(error, europe) {
       })
       .style("pointer-events", "none");
 
+      d3.select(".progress-bar").style("width","75%");
+
       coloringOnClick("#reset-color", function (d) { return '#DB8'; })
       coloringOnClick("#upcoming-color", function (d) { return upcomingCountries.indexOf(d.id) >= 0 ? '#0F7173' : '#DB8'; })
       coloringOnClick("#eu-color", function (d) { return parlgov[d.id] ? d.id === 'GBR' ? '#F05D5E' : parlgov[d.id].eu_accession_date ? 'gold' : '#DB8' : '#DB8'; })
@@ -195,6 +201,9 @@ d3.json("europe.json", function(error, europe) {
       d3.select("#rulingParty-color").on("click")();
 
       d3.select(window).on('resize', resize);
+
+      d3.select(".progress-bar").style("width","100%");
+      d3.select(".progress").transition().style("display", "none");
 
       function resize() {
           // adjust things when the window size changes
