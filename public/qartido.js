@@ -296,7 +296,7 @@ function coloringOnClick(id, func, attr) {
     //d3.selectAll(".active").classed("active", false);
     //d3.select(emojiMap[id] ? "#fill-dropdown" : id).classed("active", true);
     //d3.select(id).classed("active", true);
-    d3.select("#fill-status").text(d3.select(id).text());
+    d3.select("#fill-status").text(id === "#reset-color" ? 'none' : d3.select(id).text());
     //d3.select("#fill-caret").style("display", emojiMap[id] ? "none" : "")
   });
 }
