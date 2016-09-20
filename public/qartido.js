@@ -50,7 +50,11 @@ var emojiMap = {
   "#density-color" : "🏙",
   "#gdp-color" : "💰",
   "#gdpPerCapita-color" : "💶",
-  "#cpi-color" : "🕵"
+  "#cpi-color" : "🕵",
+  "#ruling-left-right-color" : "↔️",
+  "#ruling-state-market-color" : "🏛",
+  "#ruling-liberty-authority-color" : "⚖",
+  "#ruling-pro-anti-eu-color" : "🇪🇺",
 }
 
 function pathDotCentroid(d) {
@@ -124,7 +128,18 @@ d3.json("europe.json", function(error, europe) {
         .domain([0, 101449])
         .range(["white", "purple"])(parlgov[d.id].gdpPerCapitaUsd) : '#DB8' : '#DB8'; })
     coloringOnClick("#rulingParty-color", function(d){ return familyMap[getRulingParty(d).family_name]; })
-
+    coloringOnClick("#ruling-left-right-color", function (d) { return getRulingParty(d).left_right ? d3.scale.linear()
+        .domain([0, 5, 10])
+        .range(["red", "white", "royalblue"])(getRulingParty(d).left_right) : '#DB8'; })
+    coloringOnClick("#ruling-state-market-color", function (d) { return getRulingParty(d).state_market ? d3.scale.linear()
+        .domain([0, 5, 10])
+        .range(["red", "white", "green"])(getRulingParty(d).state_market) : '#DB8'; })
+    coloringOnClick("#ruling-liberty-authority-color", function (d) { return getRulingParty(d).liberty_authority ? d3.scale.linear()
+        .domain([0, 5, 10])
+        .range(["green", "white", "purple"])(getRulingParty(d).liberty_authority) : '#DB8'; })
+    coloringOnClick("#ruling-pro-anti-eu-color", function (d) { return getRulingParty(d).eu_anti_pro ? d3.scale.linear()
+        .domain([0, 5, 10])
+        .range(["red", "white", "royalblue"])(getRulingParty(d).eu_anti_pro) : '#DB8'; })
     //d3.selectAll(".active").classed("active", false);
     d3.select("#rulingParty-color").on("click")();
 
@@ -182,7 +197,8 @@ d3.json("europe.json", function(error, europe) {
 });
 
 function getRulingParty(d) {
-  nullResult = {family_name: '', party_name: '', party_name_english: ''}
+  nullResult = {family_name: '', party_name: '', party_name_english: '',
+    eu_anti_pro: NaN, left_right: NaN, liberty_authority: NaN, state_market: NaN}
 
   if (!parlgov[d.id] || !parlgov[d.id].parties) {
     return nullResult;
