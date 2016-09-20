@@ -31,8 +31,13 @@
   stroke: #f00;
 }
 
+.country-label {
+  /*visibility: hidden;*/
+}
+
 .country-label.highlighted {
   font-weight: bold;
+  visibility: visible;
 }
 
 .root {

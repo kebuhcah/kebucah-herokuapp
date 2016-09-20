@@ -12,7 +12,7 @@
   <header class="navbar navbar-default navbar-fixed-top" id="header">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="#">
+        <a id="reset-color" class="navbar-brand" href="#">
           🌍 <font color="#ff0000">q</font>arti<font color="#0000ff">d</font>o
         </a>
       </div>
@@ -21,14 +21,32 @@
         <ul class="nav navbar-nav">
           <li id="upcoming-color"><a href="#">⏰ 2017 Elections<span class="sr-only">(current)</span></a></li>
           <li id="eu-color"><a href="#">🇪🇺 EU Members</a></li>
+          <!-- fill dropdown -->
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Other<span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              Fill <span class="caret"></span>
+            </a>
             <ul class="dropdown-menu">
-              <li><a href="#">👥 Population</a></li>
-              <li><a href="#">💰 GDP $</a></li>
-              <li><a href="#">💶 GDP $ per capita</a></li>
+              <li><a id="population-color" href="#">👥 Population</a></li>
+              <li><a id="gdp-color" href="#">💰 GDP $</a></li>
+              <li><a id="gdpPerCapita-color" href="#">💶 GDP $ per capita</a></li>
               <li role="separator" class="divider"></li>
               <li><a id="cpi-color" href="#">🕵 Corruption Perceptions Index</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#">👑 Ruling Party Type (TODO)</a></li>
+            </ul>
+          </li>
+          <!-- border dropdown -->
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle disabled" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              Border (TODO) <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a id="population-border" href="#">👥 Population</a></li>
+              <li><a id="gdp-border" href="#">💰 GDP $</a></li>
+              <li><a id="gdpPerCapita-border" href="#">💶 GDP $ per capita</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a id="cpi-border" href="#">🕵 Corruption Perceptions Index</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="#">👑 Ruling Party Type</a></li>
             </ul>
@@ -42,7 +60,7 @@
         </form>-->
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">📊 Data Availability<span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">📊 Data Availability <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li id="party-data-color"><a href="#">ParlGov?</a></li>
             </ul>
