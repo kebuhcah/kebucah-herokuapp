@@ -42,7 +42,7 @@ var familyMap = {'Agrarian' : 'green',
   'Christian democracy' : 'aqua',
   'Communist/Socialist' : 'red',
   'Conservative' : 'royalblue',
-  'Liberal' : 'gold',
+  'Liberal' : 'orange',
   'Social democracy' : 'pink',
   'no family' : 'gray'};
 
@@ -64,6 +64,8 @@ function pathDotCentroid(d) {
     return [path.centroid(d)[0]+(unit * 14),path.centroid(d)[1]-(unit * 11.5)]
   } else if (d.id === 'HRV') {
     return [path.centroid(d)[0],path.centroid(d)[1]-unit]
+  } else if (d.id === 'CYP') {
+    return [path.centroid(d)[0]-unit*2,path.centroid(d)[1]-unit]
   } else if (d.id === 'RUS') {
     return [path.centroid(d)[0]-(unit * 10),path.centroid(d)[1]+(unit * 30)]
   } else {
@@ -85,17 +87,29 @@ d3.json("europe.json", function(error, europe) {
 
     console.log(parlgov);
 
-    var countries = topojson.feature(europe, europe.objects.countries);
+    countries = topojson.feature(europe, europe.objects.countries);
 
-    console.log(countries);
+    countries.features.forEach(function(d) {
+      if(json[d.id]) {
+        for (var attrname in json[d.id]) {
+          d.properties[attrname] = json[d.id][attrname];
+        }
+      }
+    });
 
-    cyprusDatum = {
+    var cyprusDatum = countries.features[countries.features.findIndex(function(d) { return d.id === 'CYP'; })];
+    cyprusDatum.geometry = topojson.merge(europe,europe.objects.countries.geometries.filter(function(d) {
+      return d.id === 'CYP' || d.id == 'CYN'; }));
+
+    /*{
       type: "Feature",
       id: "CYP",
       properties: { continent: "Europe", name: "Cyprus" },
       geometry: topojson.merge(europe,europe.objects.countries.geometries.filter(function(d) {
         return d.id === 'CYP' || d.id == 'CYN'; }))
-    };
+    };*/
+
+    console.log(countries);
 
     svg.append("defs").selectAll("clipPath")
         .data(countries.features.filter(function(d) { return d.id !== 'CYP' && d.id !== 'CYN'; }))
@@ -165,36 +179,36 @@ d3.json("europe.json", function(error, europe) {
 
       d3.select(".progress-bar").style("width","90%");
 
-      coloringOnClick("#reset-color", function (d) { return '#DB8'; })
-      coloringOnClick("#upcoming-color", function (d) { return upcomingCountries.indexOf(d.id) >= 0 ? '#0F7173' : '#DB8'; })
-      coloringOnClick("#eu-color", function (d) { return parlgov[d.id] ? d.id === 'GBR' ? '#F05D5E' : parlgov[d.id].eu_accession_date ? 'gold' : '#DB8' : '#DB8'; })
-      coloringOnClick("#party-data-color", function (d) { return parlgov[d.id] ? parlgov[d.id].parties ? 'green' : '#DB8' : '#DB8'; })
-      coloringOnClick("#cpi-color", function (d) { return parlgov[d.id] ? parlgov[d.id].cpi2015 ? d3.scale.linear()
+      fillOnClick("#reset-color", function (d) { return '#DB8'; })
+      fillOnClick("#upcoming-color", function (d) { return upcomingCountries.indexOf(d.id) >= 0 ? '#0F7173' : '#DB8'; })
+      fillOnClick("#eu-color", function (d) { return parlgov[d.id] ? d.id === 'GBR' ? '#F05D5E' : parlgov[d.id].eu_accession_date ? 'gold' : '' : ''; })
+      fillOnClick("#party-data-color", function (d) { return parlgov[d.id] ? parlgov[d.id].parties ? 'green' : '#DB8' : '#DB8'; })
+      fillOnClick("#cpi-color", function (d) { return parlgov[d.id] ? parlgov[d.id].cpi2015 ? d3.scale.linear()
         .domain([30, 60, 90])
         .range(["red", "white", "blue"])(parlgov[d.id].cpi2015) : '#DB8' : '#DB8'; })
-      coloringOnClick("#population-color", function (d) { return parlgov[d.id] ? parlgov[d.id].totalPopulation ? d3.scale.sqrt()
+      fillOnClick("#population-color", function (d) { return parlgov[d.id] ? parlgov[d.id].totalPopulation ? d3.scale.sqrt()
           .domain([0, 145000000])
           .range(["white", "orange"])(parlgov[d.id].totalPopulation) : '#DB8' : '#DB8'; })
-      coloringOnClick("#density-color", function (d) { return parlgov[d.id] ? parlgov[d.id].populationDensity ? d3.scale.sqrt()
+      fillOnClick("#density-color", function (d) { return parlgov[d.id] ? parlgov[d.id].populationDensity ? d3.scale.sqrt()
           .domain([5, 400])
           .range(["white", "blue"])(parlgov[d.id].populationDensity) : '#DB8' : '#DB8'; })
-      coloringOnClick("#gdp-color", function (d) { return parlgov[d.id] ? parlgov[d.id].gdpUsd ? d3.scale.sqrt()
+      fillOnClick("#gdp-color", function (d) { return parlgov[d.id] ? parlgov[d.id].gdpUsd ? d3.scale.sqrt()
           .domain([0, 3355772429854])
           .range(["white", "green"])(parlgov[d.id].gdpUsd) : '#DB8' : '#DB8'; })
-      coloringOnClick("#gdpPerCapita-color", function (d) { return parlgov[d.id] ? parlgov[d.id].gdpPerCapitaUsd ? d3.scale.linear()
+      fillOnClick("#gdpPerCapita-color", function (d) { return parlgov[d.id] ? parlgov[d.id].gdpPerCapitaUsd ? d3.scale.linear()
           .domain([0, 101449])
           .range(["white", "purple"])(parlgov[d.id].gdpPerCapitaUsd) : '#DB8' : '#DB8'; })
-      coloringOnClick("#rulingParty-color", function(d){ return familyMap[getRulingParty(d).family_name]; })
-      coloringOnClick("#ruling-left-right-color", function (d) { return getRulingParty(d).left_right ? d3.scale.linear()
+      fillOnClick("#rulingParty-color", function(d){ return familyMap[getRulingParty(d).family_name]; })
+      fillOnClick("#ruling-left-right-color", function (d) { return getRulingParty(d).left_right ? d3.scale.linear()
           .domain([0, 5, 10])
           .range(["red", "white", "royalblue"])(getRulingParty(d).left_right) : '#DB8'; })
-      coloringOnClick("#ruling-state-market-color", function (d) { return getRulingParty(d).state_market ? d3.scale.linear()
+      fillOnClick("#ruling-state-market-color", function (d) { return getRulingParty(d).state_market ? d3.scale.linear()
           .domain([0, 5, 10])
           .range(["red", "white", "green"])(getRulingParty(d).state_market) : '#DB8'; })
-      coloringOnClick("#ruling-liberty-authority-color", function (d) { return getRulingParty(d).liberty_authority ? d3.scale.linear()
+      fillOnClick("#ruling-liberty-authority-color", function (d) { return getRulingParty(d).liberty_authority ? d3.scale.linear()
           .domain([0, 5, 10])
           .range(["green", "white", "purple"])(getRulingParty(d).liberty_authority) : '#DB8'; })
-      coloringOnClick("#ruling-pro-anti-eu-color", function (d) { return getRulingParty(d).eu_anti_pro ? d3.scale.linear()
+      fillOnClick("#ruling-pro-anti-eu-color", function (d) { return getRulingParty(d).eu_anti_pro ? d3.scale.linear()
           .domain([0, 5, 10])
           .range(["red", "white", "royalblue"])(getRulingParty(d).eu_anti_pro) : '#DB8'; })
       //d3.selectAll(".active").classed("active", false);
@@ -248,11 +262,19 @@ function getRulingParty(d) {
   return nullResult;
  }
 
-function coloringOnClick(id, func) {
+function fillOnClick(id, func) {
+  coloringOnClick(id, func, "fill");
+}
+
+function edgeOnClick(id, func) {
+  coloringOnClick(id, func, "stroke");
+}
+
+function coloringOnClick(id, func, attr) {
   d3.select(id).on("click", function() {
     svg.selectAll(".country")
       .filter(function(d){ return !isHiddenCountry(d); })
-      .transition().style("fill", func);
+      .transition().style(attr, func);
     d3.selectAll(".active").classed("active", false);
     //d3.select(emojiMap[id] ? "#fill-dropdown" : id).classed("active", true);
     d3.select(id).classed("active", true);
