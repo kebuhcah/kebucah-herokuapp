@@ -74,12 +74,12 @@ function pathDotCentroid(d) {
 d3.json("europe.json", function(error, europe) {
   if (error) return console.error(error);
 
-  d3.select(".progress-bar").style("width","25%");
+  d3.select(".progress-bar").style("width","60%");
 
   d3.json('parlgov.json', function(error, json) {
     if (error) return console.error(error);
 
-    d3.select(".progress-bar").style("width","50%");
+    d3.select(".progress-bar").style("width","75%");
 
     parlgov = json; // parlgov is GLOBAL
 
@@ -163,7 +163,7 @@ d3.json("europe.json", function(error, europe) {
       })
       .style("pointer-events", "none");
 
-      d3.select(".progress-bar").style("width","75%");
+      d3.select(".progress-bar").style("width","90%");
 
       coloringOnClick("#reset-color", function (d) { return '#DB8'; })
       coloringOnClick("#upcoming-color", function (d) { return upcomingCountries.indexOf(d.id) >= 0 ? '#0F7173' : '#DB8'; })
