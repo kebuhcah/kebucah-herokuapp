@@ -184,9 +184,8 @@ d3.json("europe.json", function(error, europe) {
 
       d3.select(".progress-bar").style("width","90%");
 
-      fillOnClick("#reset-color", function (d) { return '#DB8'; })
-      fillOnClick("#upcoming-color", function (d) { return upcomingCountries.indexOf(d.id) >= 0 ? '#0F7173' : '#DB8'; })
-      fillOnClick("#party-data-color", function (d) { return d.properties.parties ? 'green' : '#DB8'; })
+      fillOnClick("#reset-color", function (d) { return 'gray'; })
+      fillOnClick("#upcoming-color", function (d) { return upcomingCountries.indexOf(d.id) >= 0 ? 'pink' : 'gray'; })
       fillOnClick("#cpi-color", function (d) { return d.properties.cpi2015 ? d3.scale.linear()
         .domain([30, 60, 90])
         .range(["red", "white", "blue"])(d.properties.cpi2015) : 'gray'; })
