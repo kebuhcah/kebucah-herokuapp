@@ -26,6 +26,14 @@ build/WDI_Data.csv: build/WDI_csv.zip
 	unzip -od $(dir $@) $<
 	touch $@
 
+build/API_KSV_DS2_en_csv_v2.zip:
+	mkdir -p $(dir $@)
+	curl -o $@ http://api.worldbank.org/v2/en/country/KSV?downloadformat=csv
+
+build/API_KSV_DS2_en_csv_v2.csv: build/API_KSV_DS2_en_csv_v2.zip
+	unzip -od $(dir $@) $<
+	touch $@
+
 build/countries.json: build/ne_110m_admin_0_countries.shp
 	rm -f $@
 	ogr2ogr -f GeoJSON -where "CONTINENT IN ('EUROPE') OR ADM0_A3 IN ('LBY', 'DZA', 'TUN', 'MAR', 'EGY', \
