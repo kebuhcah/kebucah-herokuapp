@@ -201,9 +201,9 @@ d3.json("europe.json", function(error, europe) {
       fillOnClick("#gdpPerCapita-color", function (d) { return d.properties.gdpPerCapitaUsd ? d3.scale.linear()
           .domain([0, 101449])
           .range(["white", "purple"])(d.properties.gdpPerCapitaUsd) : 'gray'; })
-      fillOnClick("#unemployment-color", function (d) { return d.properties.unemploymentIlo ? d3.scale.linear()
+      fillOnClick("#unemployment-color", function (d) { return (d.properties.unemploymentIlo || d.properties.unemploymentNat) ? d3.scale.linear()
           .domain([0, 25])
-          .range(["white", "red"])(d.properties.unemploymentIlo) : 'gray'; })
+          .range(["white", "red"])(d.properties.unemploymentIlo || d.properties.unemploymentNat) : 'gray'; })
 
       fillOnClick("#rulingParty-color", function(d){ return familyMap[getRulingParty(d).family_name]; })
       fillOnClick("#ruling-left-right-color", function (d) { return getRulingParty(d).left_right ? d3.scale.linear()
@@ -345,9 +345,11 @@ function click0(d,i) {
   //  + ' / ' + parlgov[d.id].seats_total + ' (' + d3.round(parlgov[d.id].parties[0].seats/parlgov[d.id].seats_total*100,1) + '%)' : 'unknown') : 'unknown');
   //d3.select("#country-ruling-party-votes td").text(parlgov[d.id] ? parlgov[d.id].parties ? parlgov[d.id].parties[0].vote_share + '%' : 'unknown' : 'unknown');
   d3.select("#country-population td").text(d3.format(',d')(Math.round(d.properties.totalPopulation / 100000)*100000));
+  d3.select("#country-pop-density td").text(d3.format(',d')(Math.round(d.properties.populationDensity)) + '/km²');
   d3.select("#country-gdp td").text(d3.format('$,d')(Math.round(d.properties.gdpUsd / 1000000000)*1000000000));
+  d3.select("#country-gdp-per-capita td").text(d3.format('$,d')(Math.round(d.properties.gdpPerCapitaUsd / 1000)*1000));
   d3.select("#country-corruption td").text(d.properties.cpi2015);
-  d3.select("#country-unemployment td").text(d3.format('.1f')(d.properties.unemploymentIlo) + '%');
+  d3.select("#country-unemployment td").text(d3.format('.1f')(d.properties.unemploymentIlo || d.properties.unemploymentNat) + '%');
   d3.select("#country-system td").text(d.properties.governmentType);
 
 }
