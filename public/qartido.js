@@ -231,7 +231,7 @@ d3.json("europe.json", function(error, europe) {
 
       d3.select("#rulingParty-color").on("click")();
 
-      if (window.location.hash && d3.selectAll(window.location.hash).length > 0) {
+      if (window.location.hash && d3.selectAll(window.location.hash)[0].length > 0) {
         d3.select(window.location.hash).on("click")();
       } else {
         d3.select("#eu-color").on("click")();
