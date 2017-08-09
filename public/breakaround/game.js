@@ -1,6 +1,7 @@
 var BreakAround = {}
 
-var BALL_VELOCITY = 300;
+var BALL_VELOCITY = 200;
+var BALL_SIZE = 23;
 
 BreakAround.Game = function () {
     this.paddle;
@@ -8,7 +9,6 @@ BreakAround.Game = function () {
     this.emojis;
 
     this.radius;
-    this.ballSize;
     this.graphics;
 
     this.score;
@@ -34,8 +34,6 @@ BreakAround.Game.prototype = {
 
         this.load.path = 'assets/';
 
-        ballSize = 23;
-
         alreadyIntersected = false;
 
         this.load.images(['paddle', 'ball', 'hotdog', 'emoji', 'background']);
@@ -43,7 +41,7 @@ BreakAround.Game.prototype = {
     },
 
     create: function () {
-        var background = this.add.image(radius, radius, 'background');
+        var background = this.add.sprite(radius, radius, 'background');
         background.anchor.setTo(0.5, 0.5);
 
         paddle = this.add.sprite(radius, radius, 'hotdog');
@@ -53,7 +51,7 @@ BreakAround.Game.prototype = {
         ball = this.add.sprite(radius, radius, 'ball');
         ball.anchor.setTo(0.5, 0.5);
         this.game.physics.enable(ball, Phaser.Physics.ARCADE);
-        ball.body.setCircle(ballSize);
+        ball.body.setCircle(BALL_SIZE);
 
         emojis = this.add.group();
         for (var i = 0; i < 20; i++) {
@@ -72,10 +70,14 @@ BreakAround.Game.prototype = {
 
         score = 0;
         scoreText = this.add.text(10, 10, 'Score: 0', {
-            'fill': 'white'
+            'fill': 'white',
+            'font': '20pt Courier New'
         });
 
-
+        background.scale.x = 0.8;
+        background.scale.y = 0.8;
+        var tween = this.game.add.tween(background.scale).to({x: 1.1, y: 1.1}, 2000, "Linear", true, 0, -1);
+        tween.yoyo(true, 0);
 
         this.game.input.x = radius;
         this.game.input.y = radius * 2;
@@ -100,8 +102,8 @@ BreakAround.Game.prototype = {
         var paddleCos = Math.cos(paddle.rotation) * 95;
         var paddleSin = Math.sin(paddle.rotation) * 95;
         var ballTheta = this.game.math.angleBetween(radius, radius, ball.x, ball.y);
-        var ballCos = Math.cos(ballTheta) * ballSize;
-        var ballSin = Math.sin(ballTheta) * ballSize;
+        var ballCos = Math.cos(ballTheta) * BALL_SIZE;
+        var ballSin = Math.sin(ballTheta) * BALL_SIZE;
 
         var paddleLine = new Phaser.Line(paddle.x - paddleCos, paddle.y - paddleSin, paddle.x + paddleCos, paddle.y + paddleSin);
         var ballLine = new Phaser.Line(ball.x - ballCos, ball.y - ballSin, ball.x + ballCos, ball.y + ballSin);
@@ -167,8 +169,8 @@ BreakAround.Game.prototype = {
         graphics.lineTo(paddle.x + paddleCos, paddle.y + paddleSin);
 
         var ballTheta = this.game.math.angleBetween(radius, radius, ball.x, ball.y);
-        var ballCos = Math.cos(ballTheta) * ballSize;
-        var ballSin = Math.sin(ballTheta) * ballSize;
+        var ballCos = Math.cos(ballTheta) * BALL_SIZE;
+        var ballSin = Math.sin(ballTheta) * BALL_SIZE;
 
         graphics.moveTo(ball.x - ballCos, ball.y - ballSin);
         graphics.lineTo(ball.x + ballCos, ball.y + ballSin);
