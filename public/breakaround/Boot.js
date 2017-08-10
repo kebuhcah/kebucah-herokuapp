@@ -12,8 +12,9 @@ BreakAround.Boot.prototype = {
         this.scale.pageAlignVertically = true;
 
         this.load.image('hotdog', 'assets/hotdog.png');
+    },
 
+    create: function () {
         this.state.start('BreakAround.Preload');
-
     }
 }
