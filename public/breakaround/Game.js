@@ -12,6 +12,8 @@ BreakAround.Game = function () {
     this.leastBounces;
     this.scoreText;
     this.bounceText;
+    this.velocityText;
+
 
     this.alreadyIntersected;
 
@@ -62,6 +64,23 @@ BreakAround.Game.prototype = {
         tKey.onDown.add(function () {
             showTrajectory = !showTrajectory;
         }, this);
+        var downKey = game.input.keyboard.addKey(Phaser.Keyboard.OPEN_BRACKET);
+        downKey.onDown.add(function () {
+            var oldVelocity = BALL_VELOCITY;
+            if (BALL_VELOCITY > 100)
+                BALL_VELOCITY -= 50;
+            ball.body.velocity.x = ball.body.velocity.x / oldVelocity * BALL_VELOCITY;
+            velocityText.setText(BALL_VELOCITY + ' px/sec');
+        }, this);
+        var upKey = game.input.keyboard.addKey(Phaser.Keyboard.CLOSED_BRACKET);
+        upKey.onDown.add(function () {
+            var oldVelocity = BALL_VELOCITY;
+            if (BALL_VELOCITY < 400)
+                BALL_VELOCITY += 50;
+            ball.body.velocity.x = ball.body.velocity.x / oldVelocity * BALL_VELOCITY;
+            velocityText.setText(BALL_VELOCITY + ' px/sec');
+        }, this);
+
 
         var textStyle = {
             'fill': 'white',
@@ -75,6 +94,9 @@ BreakAround.Game.prototype = {
         scoreText = this.add.text(10, 10, 'Score: 0\nHigh Score: 0', textStyle);
         bounceText = this.add.text(10, 590, 'Bounces: 0\nLeast Bounces/20: N/A', textStyle);
         bounceText.anchor.setTo(0, 1);
+        velocityText = this.add.text(590, 10, BALL_VELOCITY + ' px/sec', textStyle);
+        velocityText.anchor.setTo(1, 0);
+
 
         background.scale.x = 0.8;
         background.scale.y = 0.8;
@@ -188,14 +210,10 @@ BreakAround.Game.prototype = {
     },
 
     render: function () {
-
-
         graphics.clear();
         graphics.lineStyle(1, 0xcccccc, 1);
         graphics.moveTo(radius, radius);
         graphics.lineTo(paddle.x, paddle.y);
-
-
 
         /*
         graphics.lineStyle(10, 0xffff00, 1);
@@ -232,7 +250,7 @@ BreakAround.Game.prototype = {
                 graphics.lineTo(intersect.x + Math.cos(reflect) * 900, intersect.y + Math.sin(reflect) * 900);
             } else {
                 graphics.moveTo(ball.x, ball.y);
-                graphics.lineTo(ball.x + ball.body.velocity.x * 4.5, ball.y + ball.body.velocity.y * 4.5);
+                graphics.lineTo(ball.x + ball.body.velocity.x * 6, ball.y + ball.body.velocity.y * 6);
             }
         }
 
