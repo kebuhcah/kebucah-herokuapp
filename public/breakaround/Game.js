@@ -70,6 +70,7 @@ BreakAround.Game.prototype = {
             if (BALL_VELOCITY > 100)
                 BALL_VELOCITY -= 50;
             ball.body.velocity.x = ball.body.velocity.x / oldVelocity * BALL_VELOCITY;
+            ball.body.velocity.y = ball.body.velocity.y / oldVelocity * BALL_VELOCITY;
             velocityText.setText(BALL_VELOCITY + ' px/sec');
         }, this);
         var upKey = game.input.keyboard.addKey(Phaser.Keyboard.CLOSED_BRACKET);
@@ -78,6 +79,7 @@ BreakAround.Game.prototype = {
             if (BALL_VELOCITY < 400)
                 BALL_VELOCITY += 50;
             ball.body.velocity.x = ball.body.velocity.x / oldVelocity * BALL_VELOCITY;
+            ball.body.velocity.y = ball.body.velocity.y / oldVelocity * BALL_VELOCITY;
             velocityText.setText(BALL_VELOCITY + ' px/sec');
         }, this);
 
