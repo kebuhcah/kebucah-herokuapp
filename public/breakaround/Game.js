@@ -215,6 +215,15 @@ BreakAround.Game.prototype = {
             latestBounceText.alpha = 0.1;
             latestBounceText.scale.x = 0.5;
             latestBounceText.scale.y = 0.5;
+            if (bounces < 5) {
+                latestBounceText.fill = 'fuchsia';
+            } else if (bounces < 10) {
+                latestBounceText.fill = 'lime';
+            } else if (bounces < 20) {
+                latestBounceText.fill = 'yellow';
+            } else {
+                latestBounceText.fill = 'red';
+            }
             var alphaAppear = this.game.add.tween(latestBounceText).to({
                 alpha: 1
             }, 100, "Linear");
