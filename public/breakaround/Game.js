@@ -13,7 +13,7 @@ BreakAround.Game = function () {
     this.scoreText;
     this.bounceText;
     this.velocityText;
-
+    this.latestBounceText;
 
     this.alreadyIntersected;
 
@@ -98,7 +98,13 @@ BreakAround.Game.prototype = {
         bounceText.anchor.setTo(0, 1);
         velocityText = this.add.text(590, 10, BALL_VELOCITY + ' px/sec', textStyle);
         velocityText.anchor.setTo(1, 0);
-
+        latestBounceText = this.add.text(radius, radius, "WAVE CLEARED\nIN XX BOUNCES", {
+            'fill': 'yellow',
+            'font': '50pt Impact',
+            'align': 'center'
+        });
+        latestBounceText.anchor.setTo(0.5, 0.5);
+        latestBounceText.alpha = 0;
 
         background.scale.x = 0.8;
         background.scale.y = 0.8;
@@ -204,6 +210,30 @@ BreakAround.Game.prototype = {
             }
             levelupSound.play();
             this.respawnEmoji();
+
+            latestBounceText.setText('WAVE CLEARED\nIN ' + bounces + ' BOUNCES');
+            latestBounceText.alpha = 0.1;
+            latestBounceText.scale.x = 0.5;
+            latestBounceText.scale.y = 0.5;
+            var alphaAppear = this.game.add.tween(latestBounceText).to({
+                alpha: 1
+            }, 100, "Linear");
+            var scaleAppear = this.game.add.tween(latestBounceText.scale).to({
+                x: 1,
+                y: 1
+            }, 100, "Linear");
+            var alphaFade = this.game.add.tween(latestBounceText).to({
+                alpha: 0
+            }, 1000, "Linear");
+            var scaleFade = this.game.add.tween(latestBounceText.scale).to({
+                x: 2,
+                y: 2
+            }, 1000, "Linear");
+            alphaAppear.chain(alphaFade);
+            scaleAppear.chain(scaleFade);
+            alphaAppear.start();
+            scaleAppear.start();
+
             bounces = 0;
             bounceText.setText('Bounces: ' + bounces + '\nLeast Bounces/20: ' +
                 leastBounces);
