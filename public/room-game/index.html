@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>The Tiled Room</title>
+    <meta charset="utf-8">
+    <link href="../../lib/style.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="../../lib/phaser.js"></script>
+</head>
+
+<body>
+
+    <div id="game"></div>
+
+    <script src="Boot.js"></script>
+    <script src="Preload.js"></script>
+    <script src="Game.js"></script>
+    <script>
+        var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
+
+        game.state.add('RoomGame.Boot', RoomGame.Boot);
+        game.state.add('RoomGame.Preload', RoomGame.Preload);
+        game.state.add('RoomGame.Game', RoomGame.Game);
+
+        game.state.start('RoomGame.Boot');
+
+    </script>
+
+</body>
+
+</html>
