@@ -12,6 +12,7 @@ RoomGame.Preload.prototype = {
         this.load.path = 'assets/';
         this.load.audio('bounce', ['bounce.wav']);
         this.load.audio('spawn', ['spawn.wav']);
+        this.load.audio('death', ['death.wav']);
         this.load.spritesheet('hero', 'hero.png', 80, 80, 10);
 
         this.load.images(['block']);
@@ -23,7 +24,8 @@ RoomGame.Preload.prototype = {
 
     update: function () {
         if (this.cache.isSoundDecoded('bounce') &&
-            this.cache.isSoundDecoded('spawn') && this.ready == false) {
+            this.cache.isSoundDecoded('spawn') &&
+            this.cache.isSoundDecoded('death') && this.ready == false) {
             this.ready = true;
         }
 

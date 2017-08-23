@@ -12,10 +12,10 @@ RoomGame.Game = function () {
 
     this.bounceSound;
     this.spawnSound;
-
+    this.deathSound;
 };
 
-var SPEED = 250;
+var SPEED = 750;
 
 RoomGame.Game.prototype = {
 
@@ -65,6 +65,7 @@ RoomGame.Game.prototype = {
 
         bounceSound = this.game.add.audio('bounce');
         spawnSound = this.game.add.audio('spawn');
+        deathSound = this.game.add.audio('death');
 
     },
 
@@ -101,8 +102,9 @@ RoomGame.Game.prototype = {
         timer++;
 
 
-        game.physics.arcade.collide(hero, blocks, function () {
-            //bounceSound.play();
+        game.physics.arcade.collide(hero, blocks, function (hero, blocks) {
+            hero.kill();
+            deathSound.play();
         }, null, this);
         game.physics.arcade.collide(blocks, blocks, function () {
             bounceSound.play();
@@ -118,8 +120,8 @@ RoomGame.Game.prototype = {
         var block = blocks.create(400, 100, 'block');
 
         block.anchor.setTo(0.5, 0.5);
-        block.scale.x = 0.25;
-        block.scale.y = 0.25;
+        block.scale.x = 0.5;
+        block.scale.y = 0.5;
 
         this.game.physics.enable(block, Phaser.Physics.ARCADE);
 
