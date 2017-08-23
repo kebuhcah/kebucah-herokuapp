@@ -133,7 +133,7 @@ RoomGame.Game.prototype = {
 
         orientation *= -1;
 
-        block.tint = Math.random() * 0x666666;
+        block.tint = Math.random() * 0x666666 + 0x666666;
 
         spawnSound.play();
     }
