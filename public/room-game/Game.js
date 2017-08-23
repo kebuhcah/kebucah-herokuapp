@@ -24,6 +24,9 @@ RoomGame.Game = function () {
 };
 
 var SPEED = 750;
+var MAX_SPEED = 1000; // pixels/second
+var MIN_DISTANCE = 32; // pixels
+
 
 RoomGame.Game.prototype = {
 
@@ -88,30 +91,66 @@ RoomGame.Game.prototype = {
     },
 
     update: function () {
-        if (upKey.isDown) {
-            hero.body.velocity.y = -SPEED;
-            if (hero.body.velocity.x == 0)
-                hero.animations.play('back');
-        } else if (downKey.isDown) {
-            hero.body.velocity.y = SPEED;
-            if (hero.body.velocity.x == 0)
+
+        if (this.input.activePointer.isDown) {
+            // mouse-following code based on https://gamemechanicexplorer.com/#follow-1
+            var distance = this.game.math.distance(hero.x, hero.y, this.game.input.x, this.input.y);
+
+            window.console.log(distance);
+
+            // If the distance > MIN_DISTANCE then move
+            if (distance > MIN_DISTANCE) {
+                window.console.log("MOVING");
+
+                // Calculate the angle to the target
+                var rotation = this.game.math.angleBetween(hero.x, hero.y, this.game.input.x, this.game.input.y);
+
+                // Calculate velocity vector based on rotation and this.MAX_SPEED
+                hero.body.velocity.x = Math.cos(rotation) * MAX_SPEED;
+                hero.body.velocity.y = Math.sin(rotation) * MAX_SPEED;
+            } else {
+                hero.body.velocity.setTo(0, 0);
+            }
+
+            if (hero.body.velocity.x > 0 && hero.body.velocity.x > Math.abs(hero.body.velocity.y)) {
+                hero.animations.play('right');
+            } else if (hero.body.velocity.x < 0 && -hero.body.velocity.x > Math.abs(hero.body.velocity.y)) {
+                hero.animations.play('left');
+            } else if (hero.body.velocity.y > 0 && hero.body.velocity.y > Math.abs(hero.body.velocity.x)) {
                 hero.animations.play('front');
+            } else if (hero.body.velocity.y < 0 && -hero.body.velocity.y > Math.abs(hero.body.velocity.x)) {
+                hero.animations.play('back');
+            } else {
+                hero.animations.play('standing');
+            }
         } else {
-            hero.body.velocity.y = 0;
-        }
 
-        if (leftKey.isDown) {
-            hero.body.velocity.x = -SPEED;
-            hero.animations.play('left');
-        } else if (rightKey.isDown) {
-            hero.body.velocity.x = SPEED;
-            hero.animations.play('right');
-        } else {
-            hero.body.velocity.x = 0;
-        }
 
-        if (hero.body.velocity.x == 0 && hero.body.velocity.y == 0) {
-            hero.animations.play('standing');
+            if (upKey.isDown) {
+                hero.body.velocity.y = -SPEED;
+                if (hero.body.velocity.x == 0)
+                    hero.animations.play('back');
+            } else if (downKey.isDown) {
+                hero.body.velocity.y = SPEED;
+                if (hero.body.velocity.x == 0)
+                    hero.animations.play('front');
+            } else {
+                hero.body.velocity.y = 0;
+            }
+
+            if (leftKey.isDown) {
+                hero.body.velocity.x = -SPEED;
+                hero.animations.play('left');
+            } else if (rightKey.isDown) {
+                hero.body.velocity.x = SPEED;
+                hero.animations.play('right');
+            } else {
+                hero.body.velocity.x = 0;
+            }
+
+            if (hero.body.velocity.x == 0 && hero.body.velocity.y == 0) {
+                hero.animations.play('standing');
+            }
         }
 
         game.physics.arcade.collide(hero, blocks, function (hero, block) {
