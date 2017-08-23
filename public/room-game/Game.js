@@ -13,6 +13,14 @@ RoomGame.Game = function () {
     this.bounceSound;
     this.spawnSound;
     this.deathSound;
+    this.pointSound;
+
+    this.nextSize;
+    this.countDown;
+
+    this.score;
+    this.highScore;
+    this.scoreText;
 };
 
 var SPEED = 750;
@@ -31,8 +39,8 @@ RoomGame.Game.prototype = {
 
         this.game.stage.backgroundColor = "#4488AA";
 
-        hero = this.add.sprite(400, 300, 'hero');
-        hero.anchor.setTo(0.5, 0.5);
+        hero = this.add.sprite(0, 0, 'hero');
+        hero.anchor.setTo(0, 0);
         hero.scale.x = 0.5;
         hero.scale.y = 0.5;
 
@@ -60,13 +68,23 @@ RoomGame.Game.prototype = {
         hero.body.enable = true;
         game.physics.arcade.gravity.y = 1000;
 
-        timer = 0;
+        this.prepBlock();
         orientation = 1;
 
         bounceSound = this.game.add.audio('bounce');
         spawnSound = this.game.add.audio('spawn');
         deathSound = this.game.add.audio('death');
+        pointSound = this.game.add.audio('point');
 
+        score = 0;
+        highScore = 0;
+        var textStyle = {
+            'fill': 'white',
+            'font': '10pt Courier New'
+        };
+
+        scoreText = this.add.text(790, 10, 'Score: 0\nHigh Score: 0', textStyle);
+        scoreText.anchor.setTo(1, 0);
     },
 
     update: function () {
@@ -96,19 +114,36 @@ RoomGame.Game.prototype = {
             hero.animations.play('standing');
         }
 
-        if (timer % 120 == 0) {
-            this.spawnBlock();
+        game.physics.arcade.collide(hero, blocks, function (hero, block) {
+            if (block.scale.x > 0.25) {
+                block.kill();
+                hero.x = 0;
+                hero.y = 0;
+                deathSound.play();
+                game.camera.shake(0.05, 500);
+                score = 0;
+                scoreText.setText('Score: ' + score + '\nHigh Score: ' + highScore);
+            } else {
+                block.kill();
+                pointSound.play();
+                score++;
+                if (highScore < score)
+                    highScore = score;
+                scoreText.setText('Score: ' + score + '\nHigh Score: ' + highScore);
+            }
+        }, null, this);
+        game.physics.arcade.collide(blocks, blocks, function (b1, b2) {
+            if (b1.scale.x > 0.25 && b1.scale.x === b2.scale.x) {
+                b1.kill();
+                b2.kill();
+            }
+        }, null, this);
+
+        countDown--;
+        if (countDown === 0) {
+            this.spawnBlock(nextSize);
+            this.prepBlock();
         }
-        timer++;
-
-
-        game.physics.arcade.collide(hero, blocks, function (hero, blocks) {
-            hero.kill();
-            deathSound.play();
-        }, null, this);
-        game.physics.arcade.collide(blocks, blocks, function () {
-            bounceSound.play();
-        }, null, this);
     },
 
     render: function () {
@@ -116,12 +151,12 @@ RoomGame.Game.prototype = {
 
     },
 
-    spawnBlock: function () {
-        var block = blocks.create(400, 100, 'block');
+    spawnBlock: function (size) {
+        var block = blocks.create(750, 150, 'block');
 
         block.anchor.setTo(0.5, 0.5);
-        block.scale.x = 0.5;
-        block.scale.y = 0.5;
+        block.scale.x = size;
+        block.scale.y = size;
 
         this.game.physics.enable(block, Phaser.Physics.ARCADE);
 
@@ -129,12 +164,18 @@ RoomGame.Game.prototype = {
         block.body.collideWorldBounds = true;
         block.body.bounce.x = 1;
         block.body.bounce.y = 1;
-        block.body.velocity.x = orientation * 500;
+        block.body.velocity.x = -game.rnd.integerInRange(250, 500);
 
         orientation *= -1;
 
-        block.tint = Math.random() * 0x666666 + 0x666666;
+        block.tint = Math.random() * 0xaaaaaa + 0x666666;
 
         spawnSound.play();
+    },
+
+    prepBlock: function () {
+        var factor = ([1, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4][game.rnd.integerInRange(0, 12)]);
+        nextSize = 1 / factor;
+        countDown = 120 / factor;
     }
 }
