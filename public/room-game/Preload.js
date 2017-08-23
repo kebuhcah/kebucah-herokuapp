@@ -10,9 +10,11 @@ RoomGame.Preload.prototype = {
         //this.load.setPreloadSprite(this.preloadBar);
 
         this.load.path = 'assets/';
-        //this.load.images(['paddle', 'ball', 'emoji', 'background']);
-        //this.load.audio('point', ['point.wav']);
+        this.load.audio('bounce', ['bounce.wav']);
+        this.load.audio('spawn', ['spawn.wav']);
         this.load.spritesheet('hero', 'hero.png', 80, 80, 10);
+
+        this.load.images(['block']);
     },
 
     create: function () {
@@ -20,12 +22,10 @@ RoomGame.Preload.prototype = {
     },
 
     update: function () {
-        /*if (this.cache.isSoundDecoded('point') &&
-            this.cache.isSoundDecoded('bounce') &&
-            this.cache.isSoundDecoded('death') &&
-            this.cache.isSoundDecoded('levelup') && this.ready == false) {
+        if (this.cache.isSoundDecoded('bounce') &&
+            this.cache.isSoundDecoded('spawn') && this.ready == false) {
             this.ready = true;
-        }*/
+        }
 
         this.state.start('RoomGame.Game');
 

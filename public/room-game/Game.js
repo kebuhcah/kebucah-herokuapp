@@ -1,13 +1,21 @@
 RoomGame.Game = function () {
     this.hero;
+    this.blocks;
 
     this.upKey;
     this.downKey;
     this.leftKey;
     this.rightKey;
+
+    this.timer;
+    this.orientation;
+
+    this.bounceSound;
+    this.spawnSound;
+
 };
 
-var SPEED = 200;
+var SPEED = 250;
 
 RoomGame.Game.prototype = {
 
@@ -25,6 +33,8 @@ RoomGame.Game.prototype = {
 
         hero = this.add.sprite(400, 300, 'hero');
         hero.anchor.setTo(0.5, 0.5);
+        hero.scale.x = 0.5;
+        hero.scale.y = 0.5;
 
         hero.animations.add('right', [0, 1], 4, true);
         hero.animations.add('front', [2, 3], 4, true);
@@ -36,10 +46,25 @@ RoomGame.Game.prototype = {
 
         this.game.physics.enable(hero, Phaser.Physics.ARCADE);
 
+        blocks = this.add.group();
+
+
         upKey = game.input.keyboard.addKey(Phaser.Keyboard.UP);
         downKey = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
         leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
         rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+
+
+        hero.body.collideWorldBounds = true;
+        hero.body.allowGravity = false;
+        hero.body.enable = true;
+        game.physics.arcade.gravity.y = 1000;
+
+        timer = 0;
+        orientation = 1;
+
+        bounceSound = this.game.add.audio('bounce');
+        spawnSound = this.game.add.audio('spawn');
 
     },
 
@@ -70,18 +95,44 @@ RoomGame.Game.prototype = {
             hero.animations.play('standing');
         }
 
-        if (hero.x < 0)
-            hero.x += 800;
-        if (hero.x > 800)
-            hero.x -= 800;
-        if (hero.y < 0)
-            hero.y += 600;
-        if (hero.y > 600)
-            hero.y -= 600;
+        if (timer % 120 == 0) {
+            this.spawnBlock();
+        }
+        timer++;
+
+
+        game.physics.arcade.collide(hero, blocks, function () {
+            //bounceSound.play();
+        }, null, this);
+        game.physics.arcade.collide(blocks, blocks, function () {
+            bounceSound.play();
+        }, null, this);
     },
 
     render: function () {
 
 
+    },
+
+    spawnBlock: function () {
+        var block = blocks.create(400, 100, 'block');
+
+        block.anchor.setTo(0.5, 0.5);
+        block.scale.x = 0.25;
+        block.scale.y = 0.25;
+
+        this.game.physics.enable(block, Phaser.Physics.ARCADE);
+
+        block.body.enable = true;
+        block.body.collideWorldBounds = true;
+        block.body.bounce.x = 1;
+        block.body.bounce.y = 1;
+        block.body.velocity.x = orientation * 500;
+
+        orientation *= -1;
+
+        block.tint = Math.random() * 0x666666;
+
+        spawnSound.play();
     }
 }
