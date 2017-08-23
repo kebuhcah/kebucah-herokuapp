@@ -30,11 +30,6 @@ BreakAround.Game.prototype = {
 
     init: function () {
 
-        this.input.maxPointers = 1;
-
-        this.scale.pageAlignHorizontally = true;
-        this.scale.pageAlignVertically = true;
-
         radius = this.game.width / 2;
 
     },
@@ -183,6 +178,7 @@ BreakAround.Game.prototype = {
             ball.body.velocity.x = BALL_VELOCITY * Math.cos(theta);
             ball.body.velocity.y = BALL_VELOCITY * Math.sin(theta);
             deathSound.play();
+            game.camera.shake(0.05, 500);
 
             score = 0;
             scoreText.setText('Score: ' + score + '\nHigh Score: ' + highScore);
