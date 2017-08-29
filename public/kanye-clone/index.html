@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>The Kanya Zone</title>
+    <meta charset="utf-8">
+    <link href="../../lib/style.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="../../lib/phaser.js"></script>
+</head>
+
+<body>
+
+    <div id="game"></div>
+
+    <script src="Boot.js"></script>
+    <script src="Preload.js"></script>
+    <script src="Game.js"></script>
+    <script>
+        var game = new Phaser.Game(450, 450, Phaser.AUTO, 'game');
+
+        game.state.add('KanyeZone.Boot', KanyeZone.Boot);
+        game.state.add('KanyeZone.Preload', KanyeZone.Preload);
+        game.state.add('KanyeZone.Game', KanyeZone.Game);
+
+        game.state.start('KanyeZone.Boot');
+
+    </script>
+
+</body>
+
+</html>
