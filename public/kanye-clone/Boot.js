@@ -8,7 +8,7 @@ KanyeZone.Boot.prototype = {
         this.scale.pageAlignHorizontally = true;
         this.scale.pageAlignVertically = true;
 
-        game.stage.disableVisibilityChange = true;
+        game.stage.disableVisibilityChange = false;
 
 
         //this.load.image('hotdog', 'assets/hotdog.png');

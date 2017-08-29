@@ -10,10 +10,18 @@ KanyeZone.Preload.prototype = {
         //this.load.setPreloadSprite(this.preloadBar);
 
         this.load.path = 'assets/';
-        this.load.audio('dontletme', ['audio/dontletme.ogg']);
+        this.load.audio('dontletme', 'audio/dontletme.ogg');
+        this.load.audio('warp', 'audio/warp.ogg');
+        this.load.audio('borg', 'audio/borg.ogg');
+        this.load.audio('inflate', 'audio/inflate.ogg');
+        this.load.audio('zoneloss', 'audio/zoneloss.ogg');
+
         this.load.spritesheet('kanye', 'images/kanye.png', 56, 74, 2);
 
         this.load.image('canvasbg','images/canvasbg.jpg');
+        this.load.image('kanyeSilo','images/kanyeSilo.png');
+        this.load.image('kanyeArrow','images/smallArrowBg.png');
+        this.load.image('cash','images/cash.png');
     },
 
     create: function () {
@@ -21,7 +29,12 @@ KanyeZone.Preload.prototype = {
     },
 
     update: function () {
-        if (this.cache.isSoundDecoded('dontletme') && this.ready == false) {
+        if (this.cache.isSoundDecoded('dontletme') &&
+            this.cache.isSoundDecoded('warp') &&
+            this.cache.isSoundDecoded('borg') &&
+            this.cache.isSoundDecoded('inflate') &&
+            this.cache.isSoundDecoded('zoneloss') &&
+            this.ready == false) {
             this.ready = true;
         }
 
