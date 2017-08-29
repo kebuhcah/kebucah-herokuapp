@@ -11,6 +11,8 @@ KanyeZone.Game = function () {
     this.outerZone;
     this.blocker;
 
+    this.zoneText;
+
     this.blockerRotation;
 
     this.nextKanyeDirection;
@@ -90,14 +92,6 @@ KanyeZone.Game.prototype = {
         this.game.physics.enable(blocker, Phaser.Physics.ARCADE);
         blocker.body.setCircle(25);
 
-        /*
-        outerTween.yoyo(true, 0);
-        var innerTween = this.game.add.tween(innerZone.scale).to({
-            x: 0.2,
-            y: 0.2
-        }, 5000, "Linear", true, 0, -1);
-        innerTween.yoyo(true, 0);*/
-
         nextKanyeDirection = Math.PI * (this.rnd.realInRange(1 / 6, 1 / 3) + this.rnd.pick([0, 0.5, 1, 1.5]));
         nextKanyeX = 225 + this.rnd.integerInRange(100, 150) * this.rnd.pick([-1, 1]);
         nextKanyeY = 225 + this.rnd.integerInRange(100, 150) * this.rnd.pick([-1, 1]);
@@ -130,15 +124,13 @@ KanyeZone.Game.prototype = {
         cashEmitter.minRotation = 0;
         cashEmitter.maxRotation = 0;
 
-        /*score = 0;
-        highScore = 0;
         var textStyle = {
-            'fill': 'white',
-            'font': '10pt Courier New'
+            'fill': 'black',
+            'font': '10pt Arial'
         };
 
-        scoreText = this.add.text(790, 10, 'Score: 0\nHigh Score: 0', textStyle);
-        scoreText.anchor.setTo(1, 0);*/
+        zoneText = this.add.text(this.world.centerX, this.world.centerY + outerZone.scale.y * 100 - 10, 'Zone', textStyle);
+        zoneText.anchor.setTo(0.5, 0.5);
     },
 
     update: function () {
@@ -168,11 +160,17 @@ KanyeZone.Game.prototype = {
 
             if (innerZone.scale.x >= outerZone.scale.x) {
                 innerZone.scale.setTo(0.1, 0.1);
+
+                var nextScale = outerZone.scale.x + 0.1;
                 var outerTween = this.game.add.tween(outerZone.scale).to({
-                    x: outerZone.scale.x + 0.1,
-                    y: outerZone.scale.y + 0.1
+                    x: nextScale,
+                    y: nextScale
                 }, 2000, "Linear", true);
                 inflateSound.play();
+
+                var textTween = this.game.add.tween(zoneText).to({
+                    y: this.world.centerY + nextScale * 100 - 10
+                }, 2000, "Linear", true);
             }
 
         }, null, this);
@@ -198,6 +196,7 @@ KanyeZone.Game.prototype = {
 
             outerZone.scale.setTo(0.55, 0.55);
             innerZone.scale.setTo(0.4, 0.4);
+            zoneText.y = this.world.centerY + outerZone.scale.y * 100 - 10;
 
             lossSound.play();
         }
