@@ -13,7 +13,7 @@ KanyeZone.Preload.prototype = {
         this.load.audio('dontletme', ['audio/dontletme.ogg']);
         this.load.spritesheet('kanye', 'images/kanye.png', 56, 74, 2);
 
-        this.load.images(['block']);
+        this.load.image('canvasbg','images/canvasbg.jpg');
     },
 
     create: function () {
