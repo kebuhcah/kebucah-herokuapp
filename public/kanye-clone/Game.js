@@ -209,7 +209,7 @@ KanyeZone.Game.prototype = {
             this.camera.shake(0.05, 500);
             this.camera.flash(0xff0000, 500);
 
-            score = 0;
+            score = 50000;
             hitCount = 0;
 
             kanye.body.velocity.x = Math.cos(nextKanyeDirection) * KANYE_SPEED;
