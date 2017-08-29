@@ -11,7 +11,13 @@ KanyeZone.Game = function () {
     this.outerZone;
     this.blocker;
 
+    this.score;
+    this.hitCount;
+    this.highScore;
+    this.highHitCount;
+
     this.zoneText;
+    this.scoreText;
 
     this.blockerRotation;
 
@@ -124,16 +130,35 @@ KanyeZone.Game.prototype = {
         cashEmitter.minRotation = 0;
         cashEmitter.maxRotation = 0;
 
-        var textStyle = {
+        zoneText = this.add.text(this.world.centerX, this.world.centerY + outerZone.scale.y * 100 - 10, 'Zone', {
             'fill': 'black',
             'font': '10pt Arial'
+        });
+        zoneText.anchor.setTo(0.5, 0.5);
+
+        score = 50000;
+        highScore = 50000;
+        hitCount = 0;
+        highHitCount = 0;
+
+        var textStyle = {
+            'fill': 'white',
+            'font': '10pt Courier New'
         };
 
-        zoneText = this.add.text(this.world.centerX, this.world.centerY + outerZone.scale.y * 100 - 10, 'Zone', textStyle);
-        zoneText.anchor.setTo(0.5, 0.5);
+        scoreText = this.add.text(10, 10, 'CASH: $' + addCommas(score) + '\nKANYES: ' + hitCount +
+            '\nMax CASH: $' + addCommas(highScore) + '\nMax KANYES: ' + highHitCount, textStyle);
+        scoreText.anchor.setTo(0, 0);
+
+        var helpText = this.add.text(10, 440, 'LEFT/RIGHT arrows to move\nSPACE to *warp*', textStyle);
+        helpText.anchor.setTo(0, 1);
     },
 
     update: function () {
+        score += this.rnd.integerInRange(100, 500);
+        if (highScore < score)
+            highScore = score;
+
         game.physics.arcade.overlap(kanye, blocker, function (kanye, blocker) {
             cashEmitter.x = kanye.x;
             cashEmitter.y = kanye.y;
@@ -141,14 +166,19 @@ KanyeZone.Game.prototype = {
 
             borgSound.play();
 
+            hitCount++;
+            if (highHitCount < hitCount)
+                highHitCount = hitCount;
+            score += 1000;
+
             kanye.body.velocity.x = Math.cos(nextKanyeDirection) * KANYE_SPEED;
             kanye.body.velocity.y = Math.sin(nextKanyeDirection) * KANYE_SPEED;
             kanye.x = nextKanyeX;
             kanye.y = nextKanyeY;
 
             nextKanyeDirection = Math.PI * (this.rnd.realInRange(1 / 6, 1 / 3) + this.rnd.pick([0, 0.5, 1, 1.5]));
-            nextKanyeX = 225 + this.rnd.integerInRange(100, 150) * this.rnd.pick([-1, 1]);
-            nextKanyeY = 225 + this.rnd.integerInRange(100, 150) * this.rnd.pick([-1, 1]);
+            nextKanyeX = 225 + this.rnd.integerInRange(150, 200) * this.rnd.pick([-1, 1]);
+            nextKanyeY = 225 + this.rnd.integerInRange(150, 200) * this.rnd.pick([-1, 1]);
             nextKanye.x = nextKanyeX;
             nextKanye.y = nextKanyeY;
             nextKanyeArrow.rotation = nextKanyeDirection - Math.PI;
@@ -178,6 +208,9 @@ KanyeZone.Game.prototype = {
         if (this.math.distance(kanye.x, kanye.y, this.world.centerX, this.world.centerY) < 100 * innerZone.scale.x + 28) {
             this.camera.shake(0.05, 500);
             this.camera.flash(0xff0000, 500);
+
+            score = 0;
+            hitCount = 0;
 
             kanye.body.velocity.x = Math.cos(nextKanyeDirection) * KANYE_SPEED;
             kanye.body.velocity.y = Math.sin(nextKanyeDirection) * KANYE_SPEED;
@@ -214,7 +247,8 @@ KanyeZone.Game.prototype = {
         blocker.x = this.world.centerX + Math.cos(blockerRotation) * (outerZone.scale.x * 100 + 5 + 25);
         blocker.y = this.world.centerY - Math.sin(blockerRotation) * (outerZone.scale.y * 100 + 5 + 25);
 
-
+        scoreText.setText('CASH: $' + addCommas(score) + '\nKANYES: ' + hitCount +
+            '\nMax CASH: $' + addCommas(highScore) + '\nMax KANYES: ' + highHitCount);
     },
 
     render: function () {
@@ -223,4 +257,16 @@ KanyeZone.Game.prototype = {
         //this.game.debug.body(blocker);
         //this.game.debug.body(innerZone);
     }
+}
+
+function addCommas(nStr) {
+    nStr += '';
+    x = nStr.split('.');
+    x1 = x[0];
+    x2 = x.length > 1 ? '.' + x[1] : '';
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    }
+    return x1 + x2;
 }
