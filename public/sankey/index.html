@@ -1,6 +1,7 @@
 <!DOCTYPE html>
+<html>
 <meta charset="utf-8">
-<title>SANKEY Experiment</title>
+<title>Broker Churn Sankey</title>
 <style>
 
 .node rect {
@@ -36,8 +37,8 @@
 var units = "Widgets";
 
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
-    width = 700 - margin.left - margin.right,
-    height = 700 - margin.top - margin.bottom;
+    width = 600 - margin.left - margin.right,
+    height = 600 - margin.top - margin.bottom;
 
 var formatNumber = d3.format(",.0f"),    // zero decimal places
     format = function(d) { return formatNumber(d) + " " + units; },
@@ -53,8 +54,8 @@ var svg = d3.select("#chart").append("svg")
 
 // Set the sankey diagram properties
 var sankey = d3.sankey()
-    .nodeWidth(36)
-    .nodePadding(40)
+    .nodeWidth(20)
+    .nodePadding(20)
     .size([width, height]);
 
 var path = sankey.link();
