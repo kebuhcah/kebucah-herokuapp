@@ -185,14 +185,14 @@ class TaxCalculation extends React.Component {
                             dollar(newState)),
                         el("h6", {
                             className: "card-title"
-                        }, "City Transfer Tax"),
+                        }, "City Transfer Tax (same)"),
                         el("p", {
                                 className: "card-text"
                             },
                             dollar(oldCityVal)),
                         el("h6", {
                             className: "card-title"
-                        }, "Old Mansion Tax"),
+                        }, "Old Mansion Tax (same)"),
                         el("p", {
                                 className: "card-text"
                             },
