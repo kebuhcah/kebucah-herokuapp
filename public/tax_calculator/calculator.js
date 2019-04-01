@@ -18,7 +18,9 @@ class TaxApp extends React.Component {
     }
 
     render() {
-        return el("div", null, el("h3", null, "Transfer Tax Calculator"),
+        return el("div", null, el("h3", null, el("a",
+                                                {href: "#", target: "_blank"},
+                                                "Transfer Tax Calculator")),
             el("form", {
                     onSubmit: this.handleSubmit
                 }, el("label", {
@@ -128,7 +130,7 @@ class TaxCalculation extends React.Component {
                 className: "row"
             },
             el("div", {
-                    className: "col col-6"
+                    className: "col col-md-6 col-sm-12 col-12"
                 },
                 el("div", {
                         className: "card"
@@ -164,7 +166,7 @@ class TaxCalculation extends React.Component {
                         className: "card-footer"
                     }, "Total: " + dollar(oldState + oldCityVal + oldMansionVal)))),
             el("div", {
-                    className: "col col-6"
+                    className: "col col-md-6 col-sm-12 col-12"
                 },
                 el("div", {
                         className: "card"
