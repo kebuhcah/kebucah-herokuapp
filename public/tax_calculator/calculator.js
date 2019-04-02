@@ -82,7 +82,14 @@ class TaxApp extends React.Component {
 class TaxCalculation extends React.Component {
     render() {
         var oldState = this.props.value * 4000;
-        var newState = this.props.value * 6500;
+
+        var newState = this.props.value * 4000;
+        var newStatePct = '(0.4% when < $3M)'
+
+        if (this.props.value >= 3) {
+            newStatePct = '(0.65% when >= $3M)'
+            newState = this.props.value * 6500;
+        }
 
         var oldCityPct = '(1% when < $0.5M)';
         var oldCityVal = this.props.value * 10000;
@@ -178,7 +185,7 @@ class TaxCalculation extends React.Component {
                             className: "card-body"
                         }, el("h6", {
                             className: "card-title"
-                        }, "State Transfer Tax (0.65%)"),
+                        }, "State Transfer Tax " + newStatePct),
                         el("p", {
                                 className: "card-text"
                             },
